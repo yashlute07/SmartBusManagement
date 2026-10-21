@@ -1,0 +1,735 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBus | Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* History page */
+        #historySection {
+            display: none;
+            margin-top: 25px;
+        }
+
+        #historySection.visible {
+            display: block;
+        }
+
+        #dashboardContent.hidden {
+            display: none;
+        }
+
+        .history-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .history-form label {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .history-form input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font: inherit;
+            background: white;
+        }
+
+        .history-btn {
+            padding: 11px 16px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .history-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .history-table-wrapper {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .history-table th {
+            background: #f1f5f9;
+        }
+
+        .history-message {
+            margin: 12px 0;
+            color: #15803d;
+        }
+
+        .empty-history {
+            padding: 25px 10px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .delete-btn {
+            padding: 7px 10px;
+            background: #fee2e2;
+            color: #b91c1c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .clear-btn {
+            margin-top: 20px;
+            padding: 10px 14px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .history-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">SB</div>
+            <div>
+                <h2>SmartBus</h2>
+                <span>Management System</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="#dashboard" id="dashboardLink"
+               class="nav-item active">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="buses.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Bus Management</span>
+            </a>
+
+            <a href="passengers.html" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>Passengers</span>
+            </a>
+
+            <a href="booking.html" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Seat Booking</span>
+            </a>
+
+            <a href="fare.html" class="nav-item">
+                <span class="nav-icon">₹</span>
+                <span>Fare Calculator</span>
+            </a>
+
+            <a href="#history" id="historyLink" class="nav-item">
+                <span class="nav-icon">↺</span>
+                <span>Travel History</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>System Online</strong>
+                    <small>All modules ready</small>
+                </div>
+            </div>
+            <p>Semester 3 Integrated Project</p>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <p class="page-label">SMART BUS SYSTEM</p>
+                <h1 id="pageTitle">Dashboard</h1>
+            </div>
+
+            <div class="profile">
+                <div class="profile-text">
+                    <strong>Admin</strong>
+                    <span>Project Operator</span>
+                </div>
+                <div class="avatar">A</div>
+            </div>
+        </header>
+
+        <!-- ORIGINAL DASHBOARD -->
+        <div id="dashboardContent">
+
+            <section class="welcome-banner">
+                <div class="welcome-content">
+                    <span class="welcome-tag">
+                        SEMESTER 3 INTEGRATED PROJECT
+                    </span>
+
+                    <h2>Smart Bus &amp; Passenger Management</h2>
+
+                    <p>
+                        Manage buses, passengers, bookings and
+                        destination fares through one centralized system.
+                    </p>
+
+                    <div class="module-tags">
+                        <span>C++</span>
+                        <span>Java</span>
+                        <span>Assembly</span>
+                        <span>OpenGL</span>
+                    </div>
+                </div>
+
+                <div class="bus-illustration">
+                    <div class="bus-top">
+                        <div class="bus-window"></div>
+                        <div class="bus-window"></div>
+                        <div class="bus-window"></div>
+                    </div>
+                    <div class="bus-body">
+                        <div class="bus-front"></div>
+                        <div class="bus-light left-light"></div>
+                        <div class="bus-light right-light"></div>
+                    </div>
+                    <div class="bus-wheel wheel-left"></div>
+                    <div class="bus-wheel wheel-right"></div>
+                </div>
+            </section>
+
+            <section class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">▣</div>
+                    <div>
+                        <span>Total Buses</span>
+                        <strong>08</strong>
+                        <small>Active fleet</small>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">♙</div>
+                    <div>
+                        <span>Passengers</span>
+                        <strong>126</strong>
+                        <small>Registered users</small>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">▤</div>
+                    <div>
+                        <span>Bookings</span>
+                        <strong id="bookingCount">94</strong>
+                        <small>Today's bookings</small>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">₹</div>
+                    <div>
+                        <span>Available Seats</span>
+                        <strong>66</strong>
+                        <small>Across all buses</small>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="dashboard-grid">
+
+                <div class="panel services-panel">
+                    <div class="panel-header">
+                        <div>
+                            <span class="section-label">TRANSPORT</span>
+                            <h3>Today's Bus Services</h3>
+                        </div>
+                        <a href="buses.html" class="view-link">View all →</a>
+                    </div>
+
+                    <div class="service-list">
+
+                        <div class="service-row">
+                            <div class="route-icon">→</div>
+                            <div class="route-details">
+                                <strong>Pune <span>→</span> Nashik</strong>
+                                <small>Bus SB-101 • 08:30 AM</small>
+                            </div>
+                            <span class="service-status available">12 seats</span>
+                        </div>
+
+                        <div class="service-row">
+                            <div class="route-icon">→</div>
+                            <div class="route-details">
+                                <strong>Pune <span>→</span> Mumbai</strong>
+                                <small>Bus SB-102 • 10:00 AM</small>
+                            </div>
+                            <span class="service-status available">08 seats</span>
+                        </div>
+
+                        <div class="service-row">
+                            <div class="route-icon">→</div>
+                            <div class="route-details">
+                                <strong>Pune <span>→</span> Satara</strong>
+                                <small>Bus SB-103 • 12:30 PM</small>
+                            </div>
+                            <span class="service-status limited">04 seats</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel actions-panel">
+                    <div class="panel-header">
+                        <div>
+                            <span class="section-label">SHORTCUTS</span>
+                            <h3>Quick Actions</h3>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <a href="passengers.html" class="action-card">
+                            <div class="action-icon blue">+</div>
+                            <div>
+                                <strong>Add Passenger</strong>
+                                <small>Register a passenger</small>
+                            </div>
+                            <span>→</span>
+                        </a>
+
+                        <a href="booking.html" class="action-card">
+                            <div class="action-icon green">▤</div>
+                            <div>
+                                <strong>Book a Seat</strong>
+                                <small>Check seat availability</small>
+                            </div>
+                            <span>→</span>
+                        </a>
+
+                        <a href="fare.html" class="action-card">
+                            <div class="action-icon orange">₹</div>
+                            <div>
+                                <strong>Calculate Fare</strong>
+                                <small>Check destination fare</small>
+                            </div>
+                            <span>→</span>
+                        </a>
+
+                        <a href="#history" class="action-card"
+                           id="quickHistory">
+                            <div class="action-icon blue">↺</div>
+                            <div>
+                                <strong>Travel History</strong>
+                                <small>View recorded journeys</small>
+                            </div>
+                            <span>→</span>
+                        </a>
+
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="panel modules-panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="section-label">INTEGRATION</span>
+                        <h3>Project Modules</h3>
+                    </div>
+                    <span class="module-count">4 Subject Modules</span>
+                </div>
+
+                <div class="module-grid">
+
+                    <div class="module-card">
+                        <div class="module-number">01</div>
+                        <div class="module-content">
+                            <h4>C++ Data Structures</h4>
+                            <p>Passenger waiting list using a singly linked list.</p>
+                            <span class="module-badge">PL / CO2</span>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="module-number">02</div>
+                        <div class="module-content">
+                            <h4>Java OOP</h4>
+                            <p>Bus, passenger and booking management using classes.</p>
+                            <span class="module-badge">PSOOP / CO2</span>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="module-number">03</div>
+                        <div class="module-content">
+                            <h4>Assembly</h4>
+                            <p>Destination-based fare calculation using assembly.</p>
+                            <span class="module-badge">COA / CO2</span>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="module-number">04</div>
+                        <div class="module-content">
+                            <h4>OpenGL</h4>
+                            <p>Graphical bus visualization and transformations.</p>
+                            <span class="module-badge">CGL / CO2</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+        <!-- TRAVEL HISTORY -->
+        <section id="historySection" class="panel">
+
+            <div class="panel-header">
+                <div>
+                    <span class="section-label">TRAVEL RECORDS</span>
+                    <h3>Travel History</h3>
+                </div>
+                <strong id="journeyCount">0 journeys</strong>
+            </div>
+
+            <p>
+                Record a journey and view its passenger, route,
+                travel date, time and fare below.
+            </p>
+
+            <form id="historyForm" class="history-form">
+
+                <label>
+                    Passenger Name
+                    <input id="passenger" type="text"
+                           maxlength="80" required>
+                </label>
+
+                <label>
+                    Bus Number
+                    <input id="busNumber" type="text"
+                           placeholder="SB-101" maxlength="30" required>
+                </label>
+
+                <label>
+                    Source
+                    <input id="source" type="text"
+                           maxlength="80" required>
+                </label>
+
+                <label>
+                    Destination
+                    <input id="destination" type="text"
+                           maxlength="80" required>
+                </label>
+
+                <label>
+                    Fare (₹)
+                    <input id="fare" type="number"
+                           min="0" step="0.01" required>
+                </label>
+
+                <label>
+                    Travel Date and Time
+                    <input id="travelDateTime"
+                           type="datetime-local" required>
+                </label>
+
+                <button type="submit" class="history-btn">
+                    + Save Journey
+                </button>
+
+            </form>
+
+            <p id="historyMessage" class="history-message"
+               role="status" aria-live="polite"></p>
+
+            <div class="history-table-wrapper">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Passenger</th>
+                            <th>Bus</th>
+                            <th>Route</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Fare</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody"></tbody>
+                </table>
+            </div>
+
+            <p id="emptyHistory" class="empty-history">
+                No journeys recorded yet.
+            </p>
+
+            <button type="button" id="clearHistory" class="clear-btn">
+                Clear All History
+            </button>
+
+        </section>
+
+        <footer class="footer">
+            <span>SmartBus Management System</span>
+            <span>Semester 3 Integrated Project • 2026</span>
+        </footer>
+
+    </main>
+
+    <script>
+        const STORAGE_KEY = "smartBusTravelHistory";
+
+        const dashboardContent = document.getElementById("dashboardContent");
+        const historySection = document.getElementById("historySection");
+        const pageTitle = document.getElementById("pageTitle");
+        const dashboardLink = document.getElementById("dashboardLink");
+        const historyLink = document.getElementById("historyLink");
+        const historyForm = document.getElementById("historyForm");
+        const historyMessage = document.getElementById("historyMessage");
+        const historyTableBody = document.getElementById("historyTableBody");
+        const emptyHistory = document.getElementById("emptyHistory");
+        const journeyCount = document.getElementById("journeyCount");
+        const travelDateTime = document.getElementById("travelDateTime");
+
+        // Set the current date and time as the default.
+        function setCurrentDateTime() {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            travelDateTime.value = now.toISOString().slice(0, 16);
+        }
+
+        // Read saved records safely.
+        function getHistory() {
+            try {
+                const records = JSON.parse(
+                    localStorage.getItem(STORAGE_KEY) || "[]"
+                );
+
+                return Array.isArray(records) ? records : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        // Save records to browser storage.
+        function saveHistory(records) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        }
+
+        // Switch between Dashboard and History.
+        function showPage(page) {
+            const showHistory = page === "history";
+
+            dashboardContent.classList.toggle("hidden", showHistory);
+            historySection.classList.toggle("visible", showHistory);
+
+            dashboardLink.classList.toggle("active", !showHistory);
+            historyLink.classList.toggle("active", showHistory);
+
+            pageTitle.textContent = showHistory ? "Travel History" : "Dashboard";
+
+            if (showHistory) {
+                renderHistory();
+            }
+        }
+
+        dashboardLink.addEventListener("click", function(event) {
+            event.preventDefault();
+            history.replaceState(null, "", "#dashboard");
+            showPage("dashboard");
+        });
+
+        historyLink.addEventListener("click", function(event) {
+            event.preventDefault();
+            history.replaceState(null, "", "#history");
+            showPage("history");
+        });
+
+        document.getElementById("quickHistory").addEventListener("click", function(event) {
+            event.preventDefault();
+            history.replaceState(null, "", "#history");
+            showPage("history");
+        });
+
+        // Render the saved journeys in the table.
+        function renderHistory() {
+            const records = getHistory().sort(
+                (a, b) => new Date(b.travelDateTime) - new Date(a.travelDateTime)
+            );
+
+            historyTableBody.replaceChildren();
+
+            journeyCount.textContent =
+                records.length + (records.length === 1 ? " journey" : " journeys");
+
+            emptyHistory.style.display = records.length ? "none" : "block";
+
+            records.forEach(function(record) {
+                const row = document.createElement("tr");
+
+                function addCell(value) {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                }
+
+                const date = new Date(record.travelDateTime);
+
+                addCell(record.passenger);
+                addCell(record.busNumber);
+                addCell(record.source + " → " + record.destination);
+
+                addCell(Number.isNaN(date.getTime())
+                    ? "Invalid date"
+                    : date.toLocaleDateString("en-IN"));
+
+                addCell(Number.isNaN(date.getTime())
+                    ? "Invalid time"
+                    : date.toLocaleTimeString("en-IN", {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }));
+
+                addCell("₹" + Number(record.fare).toFixed(2));
+
+                const actionCell = document.createElement("td");
+                const deleteButton = document.createElement("button");
+
+                deleteButton.type = "button";
+                deleteButton.textContent = "Delete";
+                deleteButton.className = "delete-btn";
+                deleteButton.setAttribute("aria-label", "Delete journey");
+
+                deleteButton.addEventListener("click", function() {
+                    const updatedRecords = getHistory().filter(
+                        item => item.id !== record.id
+                    );
+
+                    saveHistory(updatedRecords);
+                    renderHistory();
+                    historyMessage.textContent = "Journey deleted.";
+                });
+
+                actionCell.appendChild(deleteButton);
+                row.appendChild(actionCell);
+                historyTableBody.appendChild(row);
+            });
+        }
+
+        // Record a new journey.
+        historyForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const passenger = document.getElementById("passenger").value.trim();
+            const busNumber = document.getElementById("busNumber").value.trim();
+            const source = document.getElementById("source").value.trim();
+            const destination = document.getElementById("destination").value.trim();
+            const fareValue = document.getElementById("fare").value;
+            const dateValue = travelDateTime.value;
+            const fare = Number(fareValue);
+
+            if (!passenger || !busNumber || !source || !destination ||
+                !dateValue || fareValue === "" || !Number.isFinite(fare) ||
+                fare < 0 || !Number.isFinite(new Date(dateValue).getTime())) {
+                historyMessage.textContent = "Please enter valid journey details.";
+                return;
+            }
+
+            const records = getHistory();
+
+            records.push({
+                id: (crypto.randomUUID
+                    ? crypto.randomUUID()
+                    : Date.now().toString() + Math.random().toString(16).slice(2)),
+                passenger: passenger,
+                busNumber: busNumber,
+                source: source,
+                destination: destination,
+                fare: fare,
+                travelDateTime: new Date(dateValue).toISOString()
+            });
+
+            try {
+                saveHistory(records);
+                historyForm.reset();
+                setCurrentDateTime();
+                renderHistory();
+                historyMessage.textContent = "Journey saved successfully!";
+            } catch (error) {
+                historyMessage.textContent =
+                    "Could not save the journey. Browser storage may be full or disabled.";
+            }
+        });
+
+        // Clear all journey records after confirmation.
+        document.getElementById("clearHistory").addEventListener("click", function() {
+            if (confirm("Are you sure you want to delete all travel history?")) {
+                try {
+                    localStorage.removeItem(STORAGE_KEY);
+                    renderHistory();
+                    historyMessage.textContent = "All travel history cleared.";
+                } catch (error) {
+                    historyMessage.textContent = "Could not clear travel history.";
+                }
+            }
+        });
+
+        // Initialize the page.
+        setCurrentDateTime();
+        showPage(location.hash === "#history" ? "history" : "dashboard");
+    </script>
+
+</body>
+</html>

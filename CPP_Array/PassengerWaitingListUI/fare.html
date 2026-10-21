@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBus | Fare Calculator</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .fare-panel {
+            max-width: 750px;
+            margin-top: 30px;
+            padding: 28px;
+        }
+
+        .fare-description {
+            color: #64748b;
+            margin: 12px 0 25px;
+            line-height: 1.6;
+        }
+
+        .fare-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .fare-form label {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .fare-form select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            font: inherit;
+        }
+
+        .calculate-button {
+            grid-column: 1 / -1;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .calculate-button:hover {
+            background: #1d4ed8;
+        }
+
+        .fare-result {
+            display: none;
+            margin-top: 25px;
+            padding: 22px;
+            border-radius: 12px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+
+        .fare-result.show {
+            display: block;
+        }
+
+        .fare-result h2 {
+            margin: 10px 0;
+            color: #1d4ed8;
+            font-size: 32px;
+        }
+
+        .fare-result p {
+            margin: 8px 0;
+        }
+
+        .fare-note {
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .fare-form {
+                grid-template-columns: 1fr;
+            }
+
+            .calculate-button {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">SB</div>
+            <div>
+                <h2>SmartBus</h2>
+                <span>Management System</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+            <a href="index.html" class="nav-item">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="buses.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Bus Management</span>
+            </a>
+
+            <a href="passengers.html" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>Passengers</span>
+            </a>
+
+            <a href="booking.html" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Seat Booking</span>
+            </a>
+
+            <a href="fare.html" class="nav-item active">
+                <span class="nav-icon">₹</span>
+                <span>Fare Calculator</span>
+            </a>
+
+            <a href="index.html#history" class="nav-item">
+                <span class="nav-icon">↺</span>
+                <span>Travel History</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>System Online</strong>
+                    <small>All modules ready</small>
+                </div>
+            </div>
+            <p>Semester 3 Integrated Project</p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <p class="page-label">SMART BUS SYSTEM</p>
+                <h1>Fare Calculator</h1>
+            </div>
+
+            <div class="profile">
+                <div class="profile-text">
+                    <strong>Admin</strong>
+                    <span>Project Operator</span>
+                </div>
+                <div class="avatar">A</div>
+            </div>
+        </header>
+
+        <section class="panel fare-panel">
+
+            <span class="section-label">TRANSPORT</span>
+            <h2>Calculate Your Bus Fare</h2>
+
+            <p class="fare-description">
+                Select your source and destination to calculate
+                the applicable bus fare.
+            </p>
+
+            <form id="fareForm" class="fare-form">
+
+                <label for="source">
+                    Source City
+                    <select id="source" required>
+                        <option value="">Select source</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Nashik">Nashik</option>
+                        <option value="Mumbai">Mumbai</option>
+                    </select>
+                </label>
+
+                <label for="destination">
+                    Destination City
+                    <select id="destination" required>
+                        <option value="">Select destination</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Nashik">Nashik</option>
+                        <option value="Mumbai">Mumbai</option>
+                    </select>
+                </label>
+
+                <button type="submit" class="calculate-button">
+                    Calculate Fare
+                </button>
+
+            </form>
+
+            <div id="fareResult" class="fare-result"
+                 aria-live="polite">
+
+                <p>Estimated Bus Fare</p>
+                <h2 id="fareAmount">₹0</h2>
+                <p id="routeDetails"></p>
+                <p id="fareExplanation"></p>
+
+            </div>
+
+            <p class="fare-note">
+                Fare rules are configured for this project demonstration.
+                Update the fare table in the JavaScript when your official
+                route fares are finalized.
+            </p>
+
+        </section>
+
+        <footer class="footer">
+            <span>SmartBus Management System</span>
+            <span>Semester 3 Integrated Project • 2026</span>
+        </footer>
+
+    </main>
+
+    <script>
+        // Fixed destination-based fares from the project configuration.
+        const destinationFares = {
+            Pune: 20,
+            Nashik: 50,
+            Mumbai: 80
+        };
+
+        const fareForm = document.getElementById("fareForm");
+        const sourceInput = document.getElementById("source");
+        const destinationInput = document.getElementById("destination");
+        const fareResult = document.getElementById("fareResult");
+        const fareAmount = document.getElementById("fareAmount");
+        const routeDetails = document.getElementById("routeDetails");
+        const fareExplanation = document.getElementById("fareExplanation");
+
+        fareForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const source = sourceInput.value;
+            const destination = destinationInput.value;
+
+            fareResult.classList.remove("show");
+
+            if (!source || !destination) {
+                alert("Please select both source and destination.");
+                return;
+            }
+
+            if (source === destination) {
+                alert("Source and destination cannot be the same.");
+                return;
+            }
+
+            if (!Object.hasOwn(destinationFares, destination)) {
+                alert("Fare is not configured for this destination.");
+                return;
+            }
+
+            const fare = destinationFares[destination];
+
+            fareAmount.textContent = "₹" + fare;
+            routeDetails.textContent =
+                source + " → " + destination;
+
+            fareExplanation.textContent =
+                "Configured fare for destination " +
+                destination + ": ₹" + fare;
+
+            fareResult.classList.add("show");
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Bus Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef3f8;
+            color: #1d2a3a;
+        }
+
+        /* HEADER */
+        header {
+            background: #123b63;
+            color: white;
+            padding: 22px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 27px;
+        }
+
+        header p {
+            margin-top: 5px;
+            color: #cbd9e8;
+        }
+
+        .status {
+            background: #1d8a55;
+            padding: 9px 17px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* LAYOUT */
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 90px);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 230px;
+            background: #ffffff;
+            padding: 25px 15px;
+            border-right: 1px solid #dce3eb;
+        }
+
+        .sidebar h3 {
+            padding: 10px 15px;
+            color: #718096;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .menu {
+            padding: 14px 15px;
+            margin: 6px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #34495e;
+        }
+
+        .menu:hover,
+        .menu.active {
+            background: #e8f1fa;
+            color: #123b63;
+            font-weight: bold;
+        }
+
+        /* MAIN */
+        main {
+            flex: 1;
+            padding: 30px;
+            max-width: 1400px;
+        }
+
+        .title {
+            margin-bottom: 25px;
+        }
+
+        .title h2 {
+            font-size: 25px;
+        }
+
+        .title p {
+            color: #718096;
+            margin-top: 6px;
+        }
+
+        /* STAT CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid #e0e7ef;
+        }
+
+        .card .icon {
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .card h4 {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .card .value {
+            font-size: 27px;
+            font-weight: bold;
+            color: #123b63;
+        }
+
+        /* CONTENT GRID */
+        .content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 22px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e0e7ef;
+        }
+
+        .panel h3 {
+            color: #123b63;
+            margin-bottom: 18px;
+        }
+
+        /* WAITING LIST */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            background: #f3f6fa;
+            padding: 13px;
+            font-size: 13px;
+            color: #5c6b7a;
+        }
+
+        td {
+            padding: 14px 13px;
+            border-bottom: 1px solid #edf0f4;
+        }
+
+        .badge {
+            background: #e7f1fb;
+            color: #123b63;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        /* LINKED LIST */
+        .linked-box {
+            background: #f5f8fb;
+            padding: 18px;
+            border-radius: 9px;
+            overflow-x: auto;
+        }
+
+        .node {
+            display: inline-block;
+            background: white;
+            border: 2px solid #123b63;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .arrow {
+            margin: 0 8px;
+            font-size: 20px;
+            color: #123b63;
+        }
+
+        /* SUBJECTS */
+        .subject {
+            padding: 15px;
+            border: 1px solid #e1e7ee;
+            border-radius: 9px;
+            margin-bottom: 12px;
+        }
+
+        .subject strong {
+            color: #123b63;
+        }
+
+        .subject p {
+            margin-top: 5px;
+            color: #718096;
+            font-size: 13px;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 25px;
+            padding: 18px;
+            text-align: center;
+            color: #718096;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1000px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 190px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            main {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>🚌 Smart Bus Management System</h1>
+        <p>Integrated Project • Semester 3</p>
+    </div>
+
+    <div class="status">
+        ● System Active
+    </div>
+</header>
+
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <h3>Project Modules</h3>
+
+        <div class="menu active">
+            🏠 Dashboard
+        </div>
+
+        <div class="menu">
+            🚌 Bus Management
+        </div>
+
+        <div class="menu">
+            👤 Passenger Management
+        </div>
+
+        <div class="menu">
+            🎫 Booking Management
+        </div>
+
+        <div class="menu">
+            📋 Passenger Waiting List
+        </div>
+
+        <h3>Subjects</h3>
+
+        <div class="menu">
+            C++ Data Structures
+        </div>
+
+        <div class="menu">
+            Java OOP
+        </div>
+
+        <div class="menu">
+            80386 Assembly
+        </div>
+
+        <div class="menu">
+            OpenGL / CGL
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main>
+
+        <div class="title">
+            <h2>Project Dashboard</h2>
+            <p>Smart Bus and Passenger Management System</p>
+        </div>
+
+
+        <!-- STATISTICS -->
+        <div class="cards">
+
+            <div class="card">
+                <div class="icon">🚌</div>
+                <h4>Total Buses</h4>
+                <div class="value">10</div>
+            </div>
+
+            <div class="card">
+                <div class="icon">👥</div>
+                <h4>Passengers</h4>
+                <div class="value">25</div>
+            </div>
+
+            <div class="card">
+                <div class="icon">🎫</div>
+                <h4>Bookings</h4>
+                <div class="value">18</div>
+            </div>
+
+            <div class="card">
+                <div class="icon">📋</div>
+                <h4>Waiting List</h4>
+                <div class="value">3</div>
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+            <!-- WAITING LIST -->
+            <section class="panel">
+
+                <h3>📋 Passenger Waiting List</h3>
+
+                <table>
+
+                    <tr>
+                        <th>Position</th>
+                        <th>Passenger ID</th>
+                        <th>Name</th>
+                        <th>Destination</th>
+                        <th>Status</th>
+                    </tr>
+
+                    <tr>
+                        <td>1</td>
+                        <td>101</td>
+                        <td>Yash</td>
+                        <td>Mumbai</td>
+                        <td>
+                            <span class="badge">Waiting</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>102</td>
+                        <td>Rahul</td>
+                        <td>Nashik</td>
+                        <td>
+                            <span class="badge">Waiting</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>103</td>
+                        <td>Amit</td>
+                        <td>Pune</td>
+                        <td>
+                            <span class="badge">Waiting</span>
+                        </td>
+                    </tr>
+
+                </table>
+
+
+                <br>
+
+                <h3>🔗 Singly Linked List</h3>
+
+                <div class="linked-box">
+
+                    <span class="node">
+                        101 | Yash
+                    </span>
+
+                    <span class="arrow">→</span>
+
+                    <span class="node">
+                        102 | Rahul
+                    </span>
+
+                    <span class="arrow">→</span>
+
+                    <span class="node">
+                        103 | Amit
+                    </span>
+
+                    <span class="arrow">→</span>
+
+                    <span class="node">
+                        NULL
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUBJECT IMPLEMENTATION -->
+            <section class="panel">
+
+                <h3>📚 Subject Implementation</h3>
+
+                <div class="subject">
+                    <strong>🔵 PL — C++</strong>
+                    <p>
+                        Passenger Waiting List using
+                        Singly Linked List.
+                    </p>
+                </div>
+
+                <div class="subject">
+                    <strong>🟢 PSOOP — Java</strong>
+                    <p>
+                        Bus, Passenger and Booking
+                        management using OOP concepts.
+                    </p>
+                </div>
+
+                <div class="subject">
+                    <strong>🟠 COA — 80386 Assembly</strong>
+                    <p>
+                        Destination-based fare computation
+                        using assembly instructions.
+                    </p>
+                </div>
+
+                <div class="subject">
+                    <strong>🟣 CGL — OpenGL</strong>
+                    <p>
+                        Bus visualization using geometric
+                        transformations.
+                    </p>
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <footer>
+            Smart Bus and Passenger Management System
+            | Semester 3 Integrated Project
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

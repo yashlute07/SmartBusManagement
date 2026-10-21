@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Smart Bus CPU Simulator</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #dfe5e8;
+            color: #222;
+        }
+
+        .title {
+            background: #263238;
+            color: white;
+            padding: 14px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr 1fr;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #999;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .panel-title {
+            background: #eeeeee;
+            padding: 9px;
+            font-weight: bold;
+            border-bottom: 1px solid #aaa;
+        }
+
+        .panel-content {
+            padding: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #455a64;
+            color: white;
+            padding: 8px;
+        }
+
+        td {
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .instruction-active {
+            background: #fff59d;
+            font-weight: bold;
+        }
+
+        .register {
+            display: flex;
+            justify-content: space-between;
+            padding: 7px;
+            margin: 4px 0;
+            background: #e0f7fa;
+            border: 1px solid #80cbc4;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+
+        .memory {
+            background: #fffde7;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+        }
+
+        .flag {
+            display: inline-block;
+            padding: 7px 12px;
+            margin: 4px;
+            background: #eeeeee;
+            border: 1px solid #aaa;
+        }
+
+        .controls {
+            padding: 12px;
+            background: #263238;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 18px;
+            margin: 4px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .step {
+            background: #ffca28;
+        }
+
+        .run {
+            background: #66bb6a;
+            color: white;
+        }
+
+        .stop {
+            background: #ef5350;
+            color: white;
+        }
+
+        .reset {
+            background: #42a5f5;
+            color: white;
+        }
+
+        .output {
+            background: #e8f5e9;
+            padding: 15px;
+            font-size: 18px;
+            border: 1px solid #81c784;
+        }
+
+        .execution {
+            background: #f5f5f5;
+            padding: 10px;
+            min-height: 100px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="title">
+
+    🚌 SMART BUS CPU SIMULATOR
+
+</div>
+
+
+
+<div class="main">
+
+
+    <!-- INSTRUCTIONS -->
+
+    <div class="panel">
+
+        <div class="panel-title">
+            CPU INSTRUCTIONS IN MEMORY
+        </div>
+
+        <div class="panel-content">
+
+            <table>
+
+                <tr>
+                    <th>Address</th>
+                    <th>Instruction</th>
+                </tr>
+
+                <tbody id="instructionTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- REGISTERS -->
+
+    <div class="panel">
+
+        <div class="panel-title">
+            CPU REGISTERS
+        </div>
+
+        <div class="panel-content">
+
+            <div class="register">
+                <span>EAX</span>
+                <span class="value" id="eax">0</span>
+            </div>
+
+            <div class="register">
+                <span>EBX</span>
+                <span class="value" id="ebx">0</span>
+            </div>
+
+            <div class="register">
+                <span>ECX</span>
+                <span class="value" id="ecx">0</span>
+            </div>
+
+            <div class="register">
+                <span>EDX</span>
+                <span class="value" id="edx">0</span>
+            </div>
+
+
+            <br>
+
+
+            <div class="panel-title">
+                SPECIAL REGISTERS
+            </div>
+
+            <div class="register">
+                <span>PC</span>
+                <span class="value" id="pc">0</span>
+            </div>
+
+            <div class="register">
+                <span>IR</span>
+                <span class="value" id="ir">---</span>
+            </div>
+
+
+            <br>
+
+
+            <div class="panel-title">
+                FLAGS
+            </div>
+
+            <div class="flag">
+                ZF = <span id="zf">0</span>
+            </div>
+
+            <div class="flag">
+                CF = <span id="cf">0</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- MEMORY -->
+
+    <div class="panel">
+
+        <div class="panel-title">
+            MEMORY
+        </div>
+
+        <div class="panel-content">
+
+            <div class="memory">
+
+                <b>CHOICE</b>
+
+                <br>
+
+                <span id="choice">
+                    2
+                </span>
+
+            </div>
+
+
+            <div class="memory">
+
+                <b>FARE</b>
+
+                <br>
+
+                <span id="fare">
+                    0
+                </span>
+
+            </div>
+
+
+            <div class="memory">
+
+                <b>DESTINATION</b>
+
+                <br>
+
+                <span id="destination">
+                    Nashik
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- EXECUTION -->
+
+    <div class="panel">
+
+        <div class="panel-title">
+            EXECUTION STATUS
+        </div>
+
+        <div class="execution">
+
+            <p>
+                Current Instruction:
+            </p>
+
+            <b id="currentInstruction">
+                Ready
+            </b>
+
+            <p>
+                Status:
+                <span id="status">
+                    Waiting
+                </span>
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- OUTPUT -->
+
+    <div class="panel">
+
+        <div class="panel-title">
+            OUTPUT
+        </div>
+
+        <div class="panel-content">
+
+            <div class="output">
+
+                Destination:
+                <b id="outputDestination">
+                    Nashik
+                </b>
+
+                <br><br>
+
+                Fare:
+                <b>
+                    ₹<span id="outputFare">0</span>
+                </b>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- SIMPLE STACK -->
+
+    <div class="panel">
+
+        <div class="panel-title">
+            PROGRAM STACK
+        </div>
+
+        <div class="panel-content">
+
+            <table>
+
+                <tr>
+                    <th>Position</th>
+                    <th>Value</th>
+                </tr>
+
+                <tr>
+                    <td>0</td>
+                    <td id="stackValue">Empty</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- CONTROLS -->
+
+<div class="controls">
+
+    <button class="step" onclick="stepExecution()">
+        ⏭ STEP
+    </button>
+
+    <button class="run" onclick="runProgram()">
+        ▶ RUN
+    </button>
+
+    <button class="stop" onclick="stopProgram()">
+        ⏹ STOP
+    </button>
+
+    <button class="reset" onclick="resetProgram()">
+        🔄 RESET
+    </button>
+
+</div>
+
+
+
+<script>
+
+
+const instructions = [
+
+    "MOV EAX, [CHOICE]",
+
+    "CMP EAX, 1",
+
+    "JE PUNE",
+
+    "CMP EAX, 2",
+
+    "JE NASHIK",
+
+    "CMP EAX, 3",
+
+    "JE MUMBAI",
+
+    "MOV EDX, 50",
+
+    "OUTPUT FARE"
+
+];
+
+
+let pc = 0;
+
+let eax = 0;
+
+let edx = 0;
+
+let fare = 0;
+
+let zf = 0;
+
+let running = false;
+
+let timer;
+
+
+
+function loadInstructions() {
+
+    let table =
+        document.getElementById("instructionTable");
+
+    table.innerHTML = "";
+
+    for (let i = 0; i < instructions.length; i++) {
+
+        let row =
+            document.createElement("tr");
+
+        row.id = "instruction-" + i;
+
+        row.innerHTML = `
+
+            <td>${i}</td>
+
+            <td>${instructions[i]}</td>
+
+        `;
+
+        table.appendChild(row);
+
+    }
+
+}
+
+
+
+function updateScreen() {
+
+    document.getElementById("eax").innerText = eax;
+
+    document.getElementById("edx").innerText = edx;
+
+    document.getElementById("pc").innerText = pc;
+
+    document.getElementById("ir").innerText =
+        instructions[pc] || "---";
+
+    document.getElementById("zf").innerText = zf;
+
+    document.getElementById("fare").innerText = fare;
+
+    document.getElementById("outputFare").innerText = fare;
+
+
+    document
+        .querySelectorAll("tr")
+        .forEach(row => {
+
+            row.classList.remove(
+                "instruction-active"
+            );
+
+        });
+
+
+    let active =
+        document.getElementById(
+            "instruction-" + pc
+        );
+
+    if (active) {
+
+        active.classList.add(
+            "instruction-active"
+        );
+
+    }
+
+}
+
+
+
+function stepExecution() {
+
+    if (pc >= instructions.length) {
+
+        document.getElementById("status")
+            .innerText = "Program Completed";
+
+        return;
+
+    }
+
+
+    let instruction =
+        instructions[pc];
+
+
+    document.getElementById(
+        "currentInstruction"
+    ).innerText = instruction;
+
+
+    document.getElementById(
+        "status"
+    ).innerText = "Executing";
+
+
+    if (pc === 0) {
+
+        eax = 2;
+
+    }
+
+
+    else if (pc === 1) {
+
+        zf = (eax === 1) ? 1 : 0;
+
+    }
+
+
+    else if (pc === 3) {
+
+        zf = (eax === 2) ? 1 : 0;
+
+    }
+
+
+    else if (pc === 6) {
+
+        zf = (eax === 3) ? 1 : 0;
+
+    }
+
+
+    else if (pc === 7) {
+
+        edx = 50;
+
+        fare = 50;
+
+    }
+
+
+    else if (pc === 8) {
+
+        document.getElementById(
+            "status"
+        ).innerText =
+            "Fare calculated successfully";
+
+    }
+
+
+    pc++;
+
+
+    updateScreen();
+
+}
+
+
+
+function runProgram() {
+
+    if (running)
+        return;
+
+
+    running = true;
+
+    timer =
+        setInterval(() => {
+
+            if (pc >= instructions.length) {
+
+                stopProgram();
+
+                return;
+
+            }
+
+            stepExecution();
+
+        }, 1000);
+
+}
+
+
+
+function stopProgram() {
+
+    running = false;
+
+    clearInterval(timer);
+
+    document.getElementById(
+        "status"
+    ).innerText = "Stopped";
+
+}
+
+
+
+function resetProgram() {
+
+    stopProgram();
+
+    pc = 0;
+
+    eax = 0;
+
+    edx = 0;
+
+    fare = 0;
+
+    zf = 0;
+
+    updateScreen();
+
+    document.getElementById(
+        "currentInstruction"
+    ).innerText = "Ready";
+
+    document.getElementById(
+        "status"
+    ).innerText = "Waiting";
+
+}
+
+
+
+loadInstructions();
+
+updateScreen();
+
+
+</script>
+
+
+</body>
+
+</html>

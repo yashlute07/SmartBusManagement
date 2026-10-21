@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Management - Smart Bus System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .header {
+            background: #0f172a;
+            color: white;
+            padding: 22px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 25px;
+        }
+
+        .header span {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 30px 40px;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .top-section h2 {
+            font-size: 25px;
+        }
+
+        .top-section p {
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .search-box {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #2563eb;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            overflow-x: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th {
+            background: #e2e8f0;
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .active {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .waiting {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .remove-btn {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background: #fecaca;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 30px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Modal */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background: white;
+            width: 420px;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .modal-box h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal-box input {
+            width: 100%;
+            padding: 11px;
+            margin-bottom: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .save-btn {
+            flex: 1;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 11px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            flex: 1;
+            background: #e2e8f0;
+            border: none;
+            padding: 11px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+
+        <div>
+            <h1>🚌 Smart Bus Management System</h1>
+            <span>Passenger Management Module</span>
+        </div>
+
+        <span>Admin Dashboard</span>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="top-section">
+
+            <div>
+                <h2>Passenger Management</h2>
+
+                <p>
+                    Manage registered passengers and waiting passengers
+                </p>
+            </div>
+
+            <button class="add-btn" onclick="openModal()">
+                + Register Passenger
+            </button>
+
+        </div>
+
+
+        <!-- Search -->
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by Passenger ID, name or destination..."
+                onkeyup="searchPassenger()"
+            >
+
+        </div>
+
+
+        <!-- Passenger Table -->
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Passenger ID</th>
+                        <th>Name</th>
+                        <th>Destination</th>
+                        <th>Bus</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="passengerTable">
+
+                    <tr>
+                        <td>P101</td>
+                        <td>Yash</td>
+                        <td>Pune</td>
+                        <td>BUS-101</td>
+                        <td>
+                            <span class="status active">
+                                BOOKED
+                            </span>
+                        </td>
+                        <td>
+                            <button
+                                class="remove-btn"
+                                onclick="removePassenger(this)">
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>P102</td>
+                        <td>Hitesh</td>
+                        <td>Nashik</td>
+                        <td>BUS-101</td>
+                        <td>
+                            <span class="status waiting">
+                                WAITING
+                            </span>
+                        </td>
+                        <td>
+                            <button
+                                class="remove-btn"
+                                onclick="removePassenger(this)">
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>P103</td>
+                        <td>Sarthak</td>
+                        <td>Mumbai</td>
+                        <td>BUS-102</td>
+                        <td>
+                            <span class="status active">
+                                BOOKED
+                            </span>
+                        </td>
+                        <td>
+                            <button
+                                class="remove-btn"
+                                onclick="removePassenger(this)">
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>P104</td>
+                        <td>Rahul</td>
+                        <td>Pune</td>
+                        <td>BUS-102</td>
+                        <td>
+                            <span class="status waiting">
+                                WAITING
+                            </span>
+                        </td>
+                        <td>
+                            <button
+                                class="remove-btn"
+                                onclick="removePassenger(this)">
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <div
+                class="empty-message"
+                id="emptyMessage">
+                No passenger found.
+            </div>
+
+        </div>
+
+
+        <a href="index.html" class="back">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- Register Passenger Popup -->
+
+    <div class="modal" id="passengerModal">
+
+        <div class="modal-box">
+
+            <h2>Register Passenger</h2>
+
+            <input
+                type="text"
+                id="passengerId"
+                placeholder="Passenger ID (e.g. P105)"
+            >
+
+            <input
+                type="text"
+                id="passengerName"
+                placeholder="Passenger Name"
+            >
+
+            <input
+                type="text"
+                id="destination"
+                placeholder="Destination"
+            >
+
+            <input
+                type="text"
+                id="busNumber"
+                placeholder="Bus Number (e.g. BUS-101)"
+            >
+
+            <div class="modal-buttons">
+
+                <button
+                    class="save-btn"
+                    onclick="addPassenger()">
+                    Register
+                </button>
+
+                <button
+                    class="cancel-btn"
+                    onclick="closeModal()">
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function openModal() {
+
+            document.getElementById("passengerModal")
+                .style.display = "flex";
+
+        }
+
+
+        function closeModal() {
+
+            document.getElementById("passengerModal")
+                .style.display = "none";
+
+        }
+
+
+        function addPassenger() {
+
+            let id =
+                document.getElementById("passengerId").value;
+
+            let name =
+                document.getElementById("passengerName").value;
+
+            let destination =
+                document.getElementById("destination").value;
+
+            let bus =
+                document.getElementById("busNumber").value;
+
+
+            if (
+                id === "" ||
+                name === "" ||
+                destination === "" ||
+                bus === ""
+            ) {
+
+                alert("Please fill all fields.");
+
+                return;
+
+            }
+
+
+            let table =
+                document.getElementById("passengerTable");
+
+
+            let row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>${id}</td>
+
+                <td>${name}</td>
+
+                <td>${destination}</td>
+
+                <td>${bus}</td>
+
+                <td>
+                    <span class="status waiting">
+                        WAITING
+                    </span>
+                </td>
+
+                <td>
+                    <button
+                        class="remove-btn"
+                        onclick="removePassenger(this)">
+                        Remove
+                    </button>
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+
+            closeModal();
+
+
+            document.getElementById("passengerId").value = "";
+            document.getElementById("passengerName").value = "";
+            document.getElementById("destination").value = "";
+            document.getElementById("busNumber").value = "";
+
+        }
+
+
+        function removePassenger(button) {
+
+            if (
+                confirm(
+                    "Remove this passenger from the system?"
+                )
+            ) {
+
+                button.closest("tr").remove();
+
+            }
+
+        }
+
+
+        function searchPassenger() {
+
+            let input =
+                document.getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+            let rows =
+                document
+                .getElementById("passengerTable")
+                .getElementsByTagName("tr");
+
+            let found = false;
+
+
+            for (let i = 0; i < rows.length; i++) {
+
+                let text =
+                    rows[i].innerText.toLowerCase();
+
+
+                if (text.includes(input)) {
+
+                    rows[i].style.display = "";
+                    found = true;
+
+                } else {
+
+                    rows[i].style.display = "none";
+
+                }
+
+            }
+
+
+            document.getElementById("emptyMessage")
+                .style.display =
+                found ? "none" : "block";
+
+        }
+
+    </script>
+
+</body>
+</html>
