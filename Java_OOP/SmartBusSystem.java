@@ -188,7 +188,7 @@ public class SmartBusSystem {
 
         for (int i = 0; i < passengerCount; i++) {
 
-            if (passengers[i].passengerId == id) {
+            if (passengers[i].getPassengerId() == id) {
 
                 System.out.println("\nPassenger Found:");
 
@@ -227,7 +227,7 @@ public class SmartBusSystem {
 
             for (int i = 0; i < passengerCount; i++) {
 
-                if (passengers[i].passengerId == passengerId) {
+                if (passengers[i].getPassengerId() == passengerId) {
 
                     passenger = passengers[i];
 
