@@ -3,3 +3,47 @@
 *.exe
 target/
 .env
+
+# Generated files
+*.class
+*.obj
+*.exe
+*.o
+*.dll
+*.log
+target/
+build/
+
+# Private configuration
+.env
+.env.*
+!.env.example
+*.local
+
+# IDE files
+.vscode/
+
+# Extracted third-party source folders
+/mysql-connector-j-26.10.0/
+Java_OOP/lib/mysql-connector-j-26.10.0/
+
+# Local database runtime state
+CPP_Array/*_state.txt
+
+# Backup and temporary copies
+Integration_Backups/
+
+# Additional backup files
+**/Backup_*/
+**/*_backup*
+**/*_before_*
+**/* copy*
+**/* - Copy*
+
+# Backup files and folders (case-sensitive patterns)
+**/Backup_*
+**/*Backup*
+*.backup
+
+# Local Java dependency JARs
+Java_OOP/lib/*.jar

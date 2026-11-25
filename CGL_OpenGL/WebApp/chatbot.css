@@ -1,0 +1,308 @@
+﻿#tripxChatLauncher {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 62px;
+    height: 62px;
+    border: 0;
+    border-radius: 50%;
+    background: #5138e8;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 99998;
+    box-shadow: 0 5px 20px rgba(0,0,0,.25);
+}
+
+#tripxChatPanel {
+    display: none;
+    position: fixed;
+    right: 24px;
+    bottom: 100px;
+    width: 350px;
+    max-width: calc(100vw - 32px);
+    height: 480px;
+    max-height: calc(100vh - 130px);
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 35px rgba(0,0,0,.25);
+    z-index: 99999;
+    font-family: Arial, sans-serif;
+    flex-direction: column;
+}
+
+#tripxChatPanel.open {
+    display: flex;
+}
+
+.tripx-chat-header {
+    background: #30206f;
+    color: white;
+    padding: 17px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tripx-chat-header strong {
+    display: block;
+    font-size: 16px;
+}
+
+.tripx-chat-header small {
+    display: block;
+    margin-top: 5px;
+    color: #ddd6ff;
+}
+
+#tripxChatClose {
+    background: transparent;
+    color: white;
+    border: 0;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.tripx-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tripx-chat-message {
+    padding: 12px 14px;
+    border-radius: 14px;
+    max-width: 85%;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.tripx-chat-message.bot {
+    background: #eeeeF5;
+    color: #222;
+    align-self: flex-start;
+}
+
+.tripx-chat-message.user {
+    background: #f5d477;
+    color: #292014;
+    align-self: flex-end;
+}
+
+.tripx-chat-suggestions {
+    display: flex;
+    gap: 6px;
+    padding: 9px;
+    overflow-x: auto;
+    border-top: 1px solid #eee;
+}
+
+.tripx-chat-suggestions button {
+    white-space: nowrap;
+    border: 1px solid #d8d2f5;
+    background: #f5f2ff;
+    color: #39258b;
+    border-radius: 18px;
+    padding: 7px 10px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.tripx-chat-input {
+    display: flex;
+    padding: 10px;
+    gap: 8px;
+    border-top: 1px solid #eee;
+}
+
+.tripx-chat-input input {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid #ddd;
+    border-radius: 22px;
+    padding: 11px 14px;
+    outline: none;
+}
+
+.tripx-chat-input button {
+    width: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: #5138e8;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    #tripxChatPanel {
+        right: 12px;
+        bottom: 88px;
+        width: calc(100vw - 24px);
+        height: min(480px, calc(100vh - 110px));
+    }
+
+    #tripxChatLauncher {
+        right: 16px;
+        bottom: 16px;
+    }
+}
+
+/* TripX Assistant - upgraded interface */
+
+#tripxChatLauncher {
+    background: linear-gradient(135deg, #7657f5, #39218f);
+    border: 3px solid rgba(255,255,255,.85);
+    box-shadow: 0 8px 28px rgba(81,56,232,.38);
+    transition: transform .2s, box-shadow .2s;
+}
+
+#tripxChatLauncher:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 12px 32px rgba(81,56,232,.48);
+}
+
+#tripxChatPanel {
+    border: 1px solid #e8e2ff;
+    box-shadow: 0 15px 55px rgba(35,20,85,.25);
+}
+
+.tripx-chat-header {
+    background: linear-gradient(120deg, #30206f, #6044d8);
+    min-height: 66px;
+    gap: 10px;
+}
+
+.tripx-chat-avatar {
+    width: 39px;
+    height: 39px;
+    min-width: 39px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.35);
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.tripx-chat-heading {
+    flex: 1;
+    min-width: 0;
+}
+
+.tripx-chat-heading strong {
+    font-size: 15px;
+}
+
+.tripx-chat-heading small {
+    font-size: 11px;
+}
+
+.tripx-online-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #55e69b;
+    margin-right: 4px;
+}
+
+#tripxChatClear,
+#tripxChatClose {
+    width: 28px;
+    height: 32px;
+    border-radius: 8px;
+    color: white;
+    background: rgba(255,255,255,.12);
+    font-size: 20px;
+    border: 0;
+    cursor: pointer;
+}
+
+#tripxChatClear:hover,
+#tripxChatClose:hover {
+    background: rgba(255,255,255,.25);
+}
+
+.tripx-chat-messages {
+    background: linear-gradient(180deg, #faf9ff, #f5f3fc);
+    padding: 18px 14px;
+}
+
+.tripx-chat-message {
+    border-radius: 15px;
+    padding: 11px 14px;
+    box-shadow: 0 2px 7px rgba(30,20,70,.06);
+    animation: tripxMessageIn .22s ease-out;
+}
+
+.tripx-chat-message.bot {
+    background: white;
+    border: 1px solid #ece8fa;
+    border-bottom-left-radius: 4px;
+}
+
+.tripx-chat-message.user {
+    background: linear-gradient(135deg, #7155eb, #5138c7);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.tripx-typing {
+    color: #7563b4 !important;
+    font-style: italic;
+    animation: tripxPulse 1s infinite alternate;
+}
+
+.tripx-chat-suggestions {
+    background: white;
+    padding: 10px;
+}
+
+.tripx-chat-suggestions button {
+    transition: background .2s, transform .2s;
+}
+
+.tripx-chat-suggestions button:hover {
+    background: #e9e2ff;
+    transform: translateY(-2px);
+}
+
+.tripx-chat-input {
+    background: white;
+}
+
+.tripx-chat-input input:focus {
+    border-color: #7155eb;
+    box-shadow: 0 0 0 3px rgba(113,85,235,.12);
+}
+
+.tripx-chat-input button {
+    background: linear-gradient(135deg, #7155eb, #39218f);
+}
+
+.tripx-chat-footer {
+    text-align: center;
+    color: #999;
+    background: white;
+    font-size: 10px;
+    padding: 5px 8px 8px;
+}
+
+@keyframes tripxMessageIn {
+    from { opacity: 0; transform: translateY(7px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tripxPulse {
+    from { opacity: .55; }
+    to { opacity: 1; }
+}

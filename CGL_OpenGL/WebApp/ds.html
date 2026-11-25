@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Bus - Data Structures</title>
+    <style>
+        body { font-family: Arial; background: #f2f5f9; margin: 0; padding: 25px; }
+        h1 { text-align: center; color: #17365d; }
+        .container { max-width: 750px; margin: auto; }
+        .card { background: white; padding: 20px; margin: 18px 0; border-radius: 10px; box-shadow: 0 2px 8px #ccc; }
+        input, select, button { padding: 10px; margin: 5px; }
+        button { background: #17365d; color: white; border: 0; border-radius: 5px; cursor: pointer; }
+        #result { background: #111; color: #00ff90; padding: 15px; min-height: 45px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Smart Bus - Data Structures</h1>
+
+    <div class="card">
+        <h2>Stack</h2>
+        <input id="stackValue" placeholder="Enter value">
+        <button onclick="runDS('stack','push','stackValue')">Push</button>
+        <button onclick="runDS('stack','pop','stackValue')">Pop</button>
+        <button onclick="runDS('stack','peek','stackValue')">Peek</button>
+        <button onclick="runDS('stack','display','stackValue')">Display</button>
+        <button onclick="runDS('stack','reset','stackValue')">Reset</button>
+    </div>
+
+    <div class="card">
+        <h2>Queue</h2>
+        <input id="queueValue" placeholder="Enter value">
+        <button onclick="runDS('queue','enqueue','queueValue')">Enqueue</button>
+        <button onclick="runDS('queue','dequeue','queueValue')">Dequeue</button>
+        <button onclick="runDS('queue','peek','queueValue')">Peek</button>
+        <button onclick="runDS('queue','display','queueValue')">Display</button>
+        <button onclick="runDS('queue','reset','queueValue')">Reset</button>
+    </div>
+
+    <div class="card">
+        <h2>Hashing</h2>
+        <input id="hashValue" placeholder="Enter value">
+        <button onclick="runDS('hash','insert','hashValue')">Insert</button>
+        <button onclick="runDS('hash','search','hashValue')">Search</button>
+        <button onclick="runDS('hash','display','hashValue')">Display</button>
+        <button onclick="runDS('hash','reset','hashValue')">Reset</button>
+    </div>
+
+    <div class="card">
+        <h2>Sorting</h2>
+        <input id="sortValue" placeholder="Example: 9 3 5 1">
+        <select id="algorithm">
+            <option value="bubble">Bubble Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="insertion">Insertion Sort</option>
+        </select>
+        <button onclick="runDS('sort','sort','sortValue')">Sort</button>
+    </div>
+
+    <div class="card">
+        <h2>Output</h2>
+        <pre id="result">Waiting for operation...</pre>
+    </div>
+</div>
+<script src="ds.js"></script>
+</body>
+</html>

@@ -1,455 +1,375 @@
-//Varad
+
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <queue>
+#include <stack>
+#include <limits>
 using namespace std;
 
-// ============================================================
-// NODE
-// Each node stores one passenger in the waiting list
-// ============================================================
-struct Node {
+const int MAX_PASSENGERS = 10;
+
+// Passenger details
+struct Passenger {
     int passengerId;
     string passengerName;
     string destination;
+};
+
+// Node for singly linked list
+struct Node {
+    Passenger data;
     Node* next;
 
     Node(int id, string name, string dest) {
-        passengerId = id;
-        passengerName = name;
-        destination = dest;
+        data.passengerId = id;
+        data.passengerName = name;
+        data.destination = dest;
         next = nullptr;
     }
 };
 
-
-// ============================================================
-// WAITING LIST CLASS
-// Singly Linked List implementation
-// ============================================================
+// ==================================================
+// LINKED LIST: EXISTING WAITING LIST
+// ==================================================
 class WaitingList {
-
 private:
     Node* head;
     int passengerCount;
 
 public:
-
-    // Constructor
     WaitingList() {
         head = nullptr;
         passengerCount = 0;
     }
 
-
-    // ========================================================
-    // ADD PASSENGER
-    // Adds a new passenger at the end of the linked list
-    // ========================================================
     void addPassenger(int id, string name, string destination) {
+        Node* newNode = new Node(id, name, destination);
 
-        Node* newNode =
-            new Node(id, name, destination);
-
-        // If list is empty
         if (head == nullptr) {
             head = newNode;
-        }
-
-        else {
+        } else {
             Node* temp = head;
-
-            // Move to the last node
             while (temp->next != nullptr) {
                 temp = temp->next;
             }
-
-            // Connect last node to new node
             temp->next = newNode;
         }
 
         passengerCount++;
-
-        cout << "\n";
-        cout << "  [SUCCESS] Passenger added to waiting list.\n";
-        cout << "  Passenger ID : " << id << endl;
-        cout << "  Name         : " << name << endl;
-        cout << "  Destination  : " << destination << endl;
+        cout << "\nPassenger added successfully!\n";
     }
 
-
-    // ========================================================
-    // DISPLAY WAITING LIST
-    // ========================================================
     void displayWaitingList() {
-
         if (head == nullptr) {
-
-            cout << "\n";
-            cout << "  [INFO] Waiting list is currently empty.\n";
+            cout << "\nWaiting list is empty.\n";
             return;
         }
 
-        cout << "\n";
-        cout << "============================================================\n";
-        cout << "                 PASSENGER WAITING LIST\n";
-        cout << "============================================================\n";
-
-        cout << left
-             << setw(8) << "No."
-             << setw(15) << "Passenger ID"
-             << setw(22) << "Passenger Name"
-             << setw(20) << "Destination"
-             << endl;
-
-        cout << "------------------------------------------------------------\n";
+        cout << "\n========== PASSENGER WAITING LIST ==========\n";
+        cout << left << setw(10) << "ID"
+             << setw(22) << "Name"
+             << setw(20) << "Destination" << '\n';
 
         Node* temp = head;
-        int position = 1;
 
         while (temp != nullptr) {
-
-            cout << left
-                 << setw(8) << position
-                 << setw(15) << temp->passengerId
-                 << setw(22) << temp->passengerName
-                 << setw(20) << temp->destination
-                 << endl;
-
+            cout << left << setw(10) << temp->data.passengerId
+                 << setw(22) << temp->data.passengerName
+                 << setw(20) << temp->data.destination << '\n';
             temp = temp->next;
-            position++;
         }
 
-        cout << "------------------------------------------------------------\n";
-        cout << "  Total Waiting Passengers : " << passengerCount << endl;
-        cout << "============================================================\n";
+        cout << "Total passengers: " << passengerCount << '\n';
     }
 
-//Yash
-
-    // ========================================================
-    // DISPLAY LINKED LIST STRUCTURE
-    // Useful for PL CO2 viva demonstration
-    // ========================================================
     void displayLinkedList() {
-
         if (head == nullptr) {
-
-            cout << "\n  Waiting List: NULL\n";
+            cout << "\nWaiting List: NULL\n";
             return;
         }
 
-        cout << "\n";
-        cout << "============================================================\n";
-        cout << "              LINKED LIST VISUALIZATION\n";
-        cout << "============================================================\n\n";
-
         Node* temp = head;
+        cout << "\nLinked List:\n";
 
         while (temp != nullptr) {
-
-            cout << "[ "
-                 << temp->passengerId
-                 << " | "
-                 << temp->passengerName
-                 << " ]";
-
-            if (temp->next != nullptr) {
-                cout << "  -->  ";
-            }
-
-            else {
-                cout << "  -->  NULL";
-            }
-
+            cout << "[ " << temp->data.passengerId
+                 << " | " << temp->data.passengerName << " ]";
+            cout << " -> ";
             temp = temp->next;
         }
 
-        cout << "\n\n";
-        cout << "  Each node points to the next passenger.\n";
-        cout << "============================================================\n";
+        cout << "NULL\n";
     }
 
-
-    // ========================================================
-    // REMOVE FIRST PASSENGER
-    // Removes the first node from linked list
-    // ========================================================
     void removeFirstPassenger() {
-
         if (head == nullptr) {
-
-            cout << "\n";
-            cout << "  [INFO] Waiting list is empty.\n";
+            cout << "\nCannot remove: waiting list is empty.\n";
             return;
         }
 
         Node* temp = head;
 
-        cout << "\n";
-        cout << "  Processing first passenger...\n";
+        cout << "\nRemoved passenger: "
+             << temp->data.passengerName
+             << " (ID: " << temp->data.passengerId << ")\n";
 
-        cout << "  Passenger ID   : "
-             << temp->passengerId << endl;
-
-        cout << "  Passenger Name : "
-             << temp->passengerName << endl;
-
-        // Move head to next node
         head = head->next;
-
-        // Delete old first node
         delete temp;
-
         passengerCount--;
-
-        cout << "\n";
-        cout << "  [SUCCESS] Passenger removed from waiting list.\n";
     }
 
-
-    // ========================================================
-    // SEARCH PASSENGER
-    // ========================================================
     void searchPassenger(int id) {
-
         Node* temp = head;
 
         while (temp != nullptr) {
-
-            if (temp->passengerId == id) {
-
-                cout << "\n";
-                cout << "============================================================\n";
-                cout << "                  PASSENGER FOUND\n";
-                cout << "============================================================\n";
-
-                cout << "  Passenger ID   : "
-                     << temp->passengerId << endl;
-
-                cout << "  Passenger Name : "
-                     << temp->passengerName << endl;
-
-                cout << "  Destination    : "
-                     << temp->destination << endl;
-
-                cout << "============================================================\n";
-
+            if (temp->data.passengerId == id) {
+                cout << "\nPassenger found!\n";
+                cout << "ID: " << temp->data.passengerId << '\n';
+                cout << "Name: " << temp->data.passengerName << '\n';
+                cout << "Destination: " << temp->data.destination << '\n';
                 return;
             }
-
             temp = temp->next;
         }
 
-        cout << "\n";
-        cout << "  [NOT FOUND] Passenger is not in the waiting list.\n";
+        cout << "\nPassenger not found.\n";
     }
 
-
-    // ========================================================
-    // DISPLAY NUMBER OF PASSENGERS
-    // ========================================================
     void displayCount() {
-
-        cout << "\n";
-        cout << "============================================================\n";
-        cout << "                  WAITING LIST STATUS\n";
-        cout << "============================================================\n";
-
-        cout << "  Current waiting passengers : "
-             << passengerCount << endl;
-
-        if (passengerCount == 0) {
-            cout << "  Status                     : EMPTY\n";
-        }
-        else {
-            cout << "  Status                     : ACTIVE\n";
-        }
-
-        cout << "============================================================\n";
+        cout << "\nWaiting passengers: " << passengerCount << '\n';
+        cout << "Status: "
+             << (passengerCount == 0 ? "EMPTY" : "ACTIVE")
+             << '\n';
     }
 
-
-    // ========================================================
-    // DESTRUCTOR
-    // Frees remaining dynamically allocated nodes
-    // ========================================================
     ~WaitingList() {
-
-        Node* temp;
-
         while (head != nullptr) {
-
-            temp = head;
+            Node* temp = head;
             head = head->next;
-
             delete temp;
         }
     }
 };
 
+// ==================================================
+// INPUT HELPER
+// ==================================================
+int readInteger(const string& prompt) {
+    int value;
 
-// ============================================================
-// HEADER
-// ============================================================
-void displayHeader() {
+    while (true) {
+        cout << prompt;
 
-    cout << "\n";
-    cout << "============================================================\n";
-    cout << "                                                            \n";
-    cout << "              SMART BUS MANAGEMENT SYSTEM                   \n";
-    cout << "              PASSENGER WAITING LIST                        \n";
-    cout << "                                                            \n";
-    cout << "============================================================\n";
+        if (cin >> value) {
+            return value;
+        }
+
+        cout << "Invalid input! Please enter a number.\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
 }
 
+Passenger readPassenger() {
+    Passenger p;
 
-// ============================================================
-// MENU
-// ============================================================
-void displayMenu() {
+    p.passengerId = readInteger("Enter Passenger ID: ");
 
-    cout << "\n";
-    cout << "+----------------------------------------------------------+\n";
-    cout << "|                      MAIN MENU                           |\n";
-    cout << "+----------------------------------------------------------+\n";
-    cout << "|  1. Add Passenger to Waiting List                       |\n";
-    cout << "|  2. View Waiting List                                   |\n";
-    cout << "|  3. View Linked List Structure                          |\n";
-    cout << "|  4. Remove First Passenger                              |\n";
-    cout << "|  5. Search Passenger                                    |\n";
-    cout << "|  6. View Waiting List Status                            |\n";
-    cout << "|  7. Exit                                                |\n";
-    cout << "+----------------------------------------------------------+\n";
+    cout << "Enter Passenger Name (one word): ";
+    cin >> p.passengerName;
+
+    cout << "Enter Destination (one word): ";
+    cin >> p.destination;
+
+    return p;
 }
 
+void displayPassenger(const Passenger& p) {
+    cout << "ID: " << p.passengerId
+         << " | Name: " << p.passengerName
+         << " | Destination: " << p.destination << '\n';
+}
 
-// ============================================================
-// MAIN FUNCTION
-// ============================================================
+// ==================================================
+// QUEUE: FIFO (FIRST IN, FIRST OUT)
+// ==================================================
+void enqueuePassenger(queue<Passenger>& q) {
+    if (q.size() >= MAX_PASSENGERS) {
+        cout << "\nQueue is full! Cannot add more passengers.\n";
+        return;
+    }
+
+    Passenger p = readPassenger();
+    q.push(p);
+
+    cout << "Passenger added to Queue successfully.\n";
+}
+
+void dequeuePassenger(queue<Passenger>& q) {
+    if (q.empty()) {
+        cout << "\nQueue is empty! No passenger to process.\n";
+        return;
+    }
+
+    cout << "\nProcessing first passenger (FIFO):\n";
+    displayPassenger(q.front());
+    q.pop();
+}
+
+void displayQueue(queue<Passenger> q) {
+    if (q.empty()) {
+        cout << "\nQueue is empty.\n";
+        return;
+    }
+
+    cout << "\nQueue (Front -> Rear):\n";
+
+    while (!q.empty()) {
+        displayPassenger(q.front());
+        q.pop();
+    }
+}
+
+// ==================================================
+// STACK: LIFO (LAST IN, FIRST OUT)
+// ==================================================
+void pushPassenger(stack<Passenger>& s) {
+    if (s.size() >= MAX_PASSENGERS) {
+        cout << "\nStack is full! Cannot add more passengers.\n";
+        return;
+    }
+
+    Passenger p = readPassenger();
+    s.push(p);
+
+    cout << "Passenger added to Stack successfully.\n";
+}
+
+void popPassenger(stack<Passenger>& s) {
+    if (s.empty()) {
+        cout << "\nStack is empty! No passenger to remove.\n";
+        return;
+    }
+
+    cout << "\nProcessing most recently added passenger (LIFO):\n";
+    displayPassenger(s.top());
+    s.pop();
+}
+
+void displayStack(stack<Passenger> s) {
+    if (s.empty()) {
+        cout << "\nStack is empty.\n";
+        return;
+    }
+
+    cout << "\nStack (Top -> Bottom):\n";
+
+    while (!s.empty()) {
+        displayPassenger(s.top());
+        s.pop();
+    }
+}
+
+// ==================================================
+// MAIN MENU
+// ==================================================
 int main() {
-
     WaitingList waitingList;
+    queue<Passenger> passengerQueue;
+    stack<Passenger> passengerStack;
 
     int choice;
 
-    displayHeader();
-
     do {
+        cout << "\n============================================\n";
+        cout << "       SMART BUS MANAGEMENT SYSTEM\n";
+        cout << "============================================\n";
+        cout << "LINKED LIST OPERATIONS\n";
+        cout << "1. Add Passenger to Waiting List\n";
+        cout << "2. View Waiting List\n";
+        cout << "3. View Linked List Structure\n";
+        cout << "4. Remove First Passenger\n";
+        cout << "5. Search Passenger\n";
+        cout << "6. View Waiting List Status\n";
+        cout << "\nQUEUE OPERATIONS (FIFO)\n";
+        cout << "7. Enqueue Passenger\n";
+        cout << "8. Dequeue Passenger\n";
+        cout << "9. Display Queue\n";
+        cout << "\nSTACK OPERATIONS (LIFO)\n";
+        cout << "10. Push Passenger\n";
+        cout << "11. Pop Passenger\n";
+        cout << "12. Display Stack\n";
+        cout << "13. Exit\n";
+        cout << "============================================\n";
 
-        displayMenu();
-
-        cout << "\n  Enter your choice: ";
-        cin >> choice;
+        choice = readInteger("Enter your choice: ");
 
         switch (choice) {
-
-            // ------------------------------------------------
-            // ADD PASSENGER
-            // ------------------------------------------------
             case 1: {
-
-                int id;
-                string name;
-                string destination;
-
-                cout << "\n------------------------------------------------------------\n";
-                cout << "                  ADD PASSENGER\n";
-                cout << "------------------------------------------------------------\n";
-
-                cout << "  Enter Passenger ID  : ";
-                cin >> id;
-
-                cout << "  Enter Passenger Name: ";
-                cin >> name;
-
-                cout << "  Enter Destination   : ";
-                cin >> destination;
-
+                Passenger p = readPassenger();
                 waitingList.addPassenger(
-                    id,
-                    name,
-                    destination
+                    p.passengerId, p.passengerName, p.destination
                 );
-
                 break;
             }
 
-
-            // ------------------------------------------------
-            // DISPLAY WAITING LIST
-            // ------------------------------------------------
             case 2:
-
                 waitingList.displayWaitingList();
                 break;
 
-
-            // ------------------------------------------------
-            // DISPLAY LINKED LIST
-            // ------------------------------------------------
             case 3:
-
                 waitingList.displayLinkedList();
                 break;
 
-
-            // ------------------------------------------------
-            // REMOVE FIRST PASSENGER
-            // ------------------------------------------------
             case 4:
-
                 waitingList.removeFirstPassenger();
                 break;
 
-
-            // ------------------------------------------------
-            // SEARCH PASSENGER
-            // ------------------------------------------------
             case 5: {
-
-                int id;
-
-                cout << "\n";
-                cout << "  Enter Passenger ID to search: ";
-                cin >> id;
-
+                int id = readInteger("Enter Passenger ID to search: ");
                 waitingList.searchPassenger(id);
-
                 break;
             }
 
-
-            // ------------------------------------------------
-            // STATUS
-            // ------------------------------------------------
             case 6:
-
                 waitingList.displayCount();
                 break;
 
-
-            // ------------------------------------------------
-            // EXIT
-            // ------------------------------------------------
             case 7:
-
-                cout << "\n";
-                cout << "============================================================\n";
-                cout << "       Thank you for using Smart Bus System!\n";
-                cout << "============================================================\n";
-
+                enqueuePassenger(passengerQueue);
                 break;
 
+            case 8:
+                dequeuePassenger(passengerQueue);
+                break;
+
+            case 9:
+                displayQueue(passengerQueue);
+                break;
+
+            case 10:
+                pushPassenger(passengerStack);
+                break;
+
+            case 11:
+                popPassenger(passengerStack);
+                break;
+
+            case 12:
+                displayStack(passengerStack);
+                break;
+
+            case 13:
+                cout << "\nExiting Smart Bus Management System.\n";
+                break;
 
             default:
-
-                cout << "\n";
-                cout << "  [ERROR] Invalid choice. Please try again.\n";
+                cout << "\nInvalid choice! Select an option from 1 to 13.\n";
         }
 
-    } while (choice != 7);
-
+    } while (choice != 13);
 
     return 0;
 }
+

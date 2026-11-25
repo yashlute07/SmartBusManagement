@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -228,7 +228,7 @@
     <div class="header">
 
         <div>
-            <h1>🚌 Smart Bus Management System</h1>
+            <h1>&#128652; Smart Bus Management System</h1>
             <span>Passenger Management Module</span>
         </div>
 
@@ -384,7 +384,7 @@
 
 
         <a href="index.html" class="back">
-            ← Back to Dashboard
+            &larr; Back to Dashboard
         </a>
 
     </div>
@@ -597,5 +597,168 @@
 
     </script>
 
+    <script src="auth.js"></script>
+
+<!-- TRIPX_DS_CONTROLS -->
+<style>
+#tripxDSControls {
+    display:flex; flex-wrap:wrap; gap:12px;
+    margin:18px 0; padding:16px;
+    background:#ffffff; border-radius:12px;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
+#tripxDSControls button {
+    padding:11px 18px; border:0; border-radius:8px;
+    background:#2563eb; color:white; font-weight:600;
+    cursor:pointer;
+}
+#tripxDSControls button:hover { background:#1d4ed8; }
+#tripxDSMessage {
+    width:100%; color:#334155; font-size:14px;
+}
+.tripx-found { outline:3px solid #22c55e; }
+</style>
+
+<div id="tripxDSControls">
+    <button type="button" id="tripxUndo">↶ Undo Last Removal</button>
+    <button type="button" id="tripxQueue">👥 Process Waiting Passenger</button>
+    <button type="button" id="tripxSort">↕ Sort by Name</button>
+    <button type="button" id="tripxHash">⌕ Search Passenger ID</button>
+    <div id="tripxDSMessage">Passenger management tools are ready.</div>
+</div>
+
+<script>
+(function () {
+    const panel = document.getElementById("tripxDSControls");
+    const tbody = document.querySelector("table tbody");
+    const message = document.getElementById("tripxDSMessage");
+
+    if (!tbody) {
+        message.textContent = "Passenger table not found. Please check the table structure.";
+        return;
+    }
+
+    // STACK: store snapshots before passenger removal
+    const undoStack = [];
+
+    document.addEventListener("click", function (event) {
+        const button = event.target.closest("button");
+        if (!button || button.id === "tripxUndo") return;
+
+        if (button.textContent.trim().toLowerCase().includes("remove")) {
+            const before = tbody.innerHTML;
+            setTimeout(function () {
+                if (tbody.innerHTML !== before) {
+                    undoStack.push(before);
+                    message.textContent = "Removal action saved. Undo is available.";
+                }
+            }, 100);
+        }
+    }, true);
+
+    document.getElementById("tripxUndo").addEventListener("click", function () {
+        if (!undoStack.length) {
+            message.textContent = "No recent removal available to undo.";
+            return;
+        }
+        tbody.innerHTML = undoStack.pop();
+        message.textContent = "Last passenger removal undone.";
+    });
+
+    // QUEUE: process the first passenger with WAITING status
+    document.getElementById("tripxQueue").addEventListener("click", function () {
+        const rows = Array.from(tbody.rows);
+        const waitingRow = rows.find(row =>
+            row.cells[4] &&
+            row.cells[4].textContent.trim().toUpperCase().includes("WAITING")
+        );
+
+        if (!waitingRow) {
+            message.textContent = "No passengers are currently waiting.";
+            return;
+        }
+
+        const statusCell = waitingRow.cells[4];
+        statusCell.textContent = "BOOKED";
+        statusCell.style.color = "#15803d";
+        statusCell.style.fontWeight = "bold";
+
+        message.textContent = "Next waiting passenger processed: " +
+            waitingRow.cells[1].textContent.trim();
+    });
+
+    // SORTING: alphabetical order by passenger name
+    document.getElementById("tripxSort").addEventListener("click", function () {
+        const rows = Array.from(tbody.rows);
+        rows.sort((a, b) =>
+            (a.cells[1]?.textContent || "").trim().localeCompare(
+                (b.cells[1]?.textContent || "").trim()
+            )
+        );
+        rows.forEach(row => tbody.appendChild(row));
+        message.textContent = "Passengers sorted alphabetically by name.";
+    });
+
+    // HASHING: 23 buckets with linear probing
+    document.getElementById("tripxHash").addEventListener("click", function () {
+        const id = prompt("Enter Passenger ID (example: P101):");
+        if (!id) return;
+
+        const size = 23;
+        const hashTable = new Array(size).fill(null);
+        const rows = Array.from(tbody.rows);
+
+        function hash(key) {
+            let sum = 0;
+            for (let i = 0; i < key.length; i++) sum += key.charCodeAt(i);
+            return sum % size;
+        }
+
+        rows.forEach(row => {
+            const key = row.cells[0]?.textContent.trim();
+            if (!key) return;
+            let index = hash(key);
+            for (let i = 0; i < size; i++) {
+                const slot = (index + i) % size;
+                if (hashTable[slot] === null) {
+                    hashTable[slot] = { key, row };
+                    break;
+                }
+            }
+        });
+
+        let index = hash(id.trim());
+        let found = null;
+
+        for (let i = 0; i < size; i++) {
+            const item = hashTable[(index + i) % size];
+            if (item === null) break;
+            if (item.key.toLowerCase() === id.trim().toLowerCase()) {
+                found = item.row;
+                break;
+            }
+        }
+
+        rows.forEach(row => row.classList.remove("tripx-found"));
+
+        if (found) {
+            found.classList.add("tripx-found");
+            found.scrollIntoView({ behavior: "smooth", block: "center" });
+            message.textContent = "Passenger found: " + id;
+        } else {
+            message.textContent = "Passenger ID not found: " + id;
+        }
+    });
+
+    // Place controls immediately before the passenger table
+    const table = panel.nextElementSibling;
+    if (table && table.tagName === "TABLE") {
+        table.parentNode.insertBefore(panel, table);
+    }
+})();
+</script>
+<!-- END TRIPX_DS_CONTROLS -->
+
 </body>
 </html>
+

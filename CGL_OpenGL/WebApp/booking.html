@@ -1,5 +1,4 @@
-```html
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -210,6 +209,82 @@ th { background: #eff6ff; }
     .seat-grid { gap: 7px; }
     .seat { min-height: 48px; font-size: 12px; }
 }
+
+/* TripX 3D Bus Sections */
+.bus3d-section,
+.bus-animation-section {
+    background: #ffffff;
+    margin: 28px auto;
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.09);
+    max-width: 1100px;
+}
+
+.bus3d-section h2,
+.bus-animation-section h2 {
+    color: #1d4ed8;
+    margin-top: 5px;
+}
+
+#bus3d {
+    width: 100%;
+    height: 520px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #101827;
+}
+
+#bus3d canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.seat-controls,
+.bus-animation-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.seat-controls button,
+.bus-animation-controls button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    background: #2563eb;
+    cursor: pointer;
+}
+
+#busAnimation3D {
+    width: 100%;
+    height: 480px;
+    background: #9bd3f5;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#busAnimation3D canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#busAnimSpeed {
+    width: auto;
+    min-width: 130px;
+}
+
+@media (max-width: 650px) {
+    #bus3d { height: 380px; }
+    #busAnimation3D { height: 320px; }
+    .bus3d-section,
+    .bus-animation-section { padding: 14px; }
+}
 </style>
 </head>
 
@@ -218,7 +293,7 @@ th { background: #eff6ff; }
 
     <div class="header">
         <h1>Smart Bus Seat Booking</h1>
-        <a href="index.html" class="back">← Dashboard</a>
+        <a href="index.html" class="back">&larr; Back to Dashboard</a>
     </div>
 
     <p>Select your bus and journey to see available and booked seats.</p>
@@ -239,6 +314,21 @@ th { background: #eff6ff; }
             <label for="travelDate">Journey Date</label>
             <input type="date" id="travelDate" required>
         </div>
+        <div class="field">
+            <label for="departureTime">Departure Time</label>
+            <input type="time" id="departureTime" required>
+        </div>
+<div class="refund-policy" style="margin:18px 0;padding:18px;border:1px solid #d6dce5;border-radius:12px;background:#f8fafc;color:#1e293b;">
+    <h3 style="margin:0 0 10px;">Cancellation &amp; Refund Policy</h3>
+    <p style="margin:0 0 10px;">Refund is calculated according to the time remaining before bus departure:</p>
+    <ul style="margin:0;padding-left:22px;line-height:1.9;">
+        <li>More than 24 hours before departure: <strong>90% refund</strong></li>
+        <li>12 hours to 24 hours before departure: <strong>75% refund</strong></li>
+        <li>4 hours to less than 12 hours before departure: <strong>50% refund</strong></li>
+        <li>4 hours or less before departure: <strong>0% refund</strong></li>
+    </ul>
+    <p style="margin:10px 0 0;font-size:13px;">Cancelled bookings remain visible in booking history. Cancelled seats become available again. Refund shown is a demo calculation; no actual payment is processed.</p>
+</div>
 
         <div class="field">
             <label for="source">Source</label>
@@ -276,7 +366,7 @@ th { background: #eff6ff; }
     </div>
 
     <div class="bus-layout">
-        <div class="driver">Driver / Front of Bus ↑</div>
+        <div class="driver">Driver / Front of Bus &#9650;</div>
         <div id="seatGrid" class="seat-grid"></div>
     </div>
 
@@ -309,8 +399,8 @@ th { background: #eff6ff; }
             <div><strong>Selected seats:</strong> <span id="selectedSeats">None</span></div>
             <div><strong>Vacant seats:</strong> <span id="vacantCount">20</span></div>
             <div><strong>Booked seats:</strong> <span id="bookedCount">0</span></div>
-            <div><strong>Fare per seat:</strong> ₹<span id="fare">0</span></div>
-            <div><strong>Total fare:</strong> ₹<span id="total">0</span></div>
+            <div><strong>Fare per seat:</strong>&#8377;<span id="fare">0</span></div>
+            <div><strong>Total fare:</strong>&#8377;<span id="total">0</span></div>
         </div>
 
         <button type="submit" class="primary-btn">Confirm Booking</button>
@@ -327,9 +417,7 @@ th { background: #eff6ff; }
                     <th>Passenger</th>
                     <th>Bus</th>
                     <th>Journey</th>
-                    <th>Date</th>
-                    <th>Seat</th>
-                    <th>Fare</th>
+                    <th>Date</th><th>Departure</th><th>Seat</th><th>Fare</th><th>Status / Refund</th>
                     <th>Booked At</th>
                     <th>Action</th>
                 </tr>
@@ -355,6 +443,7 @@ const BUS_SEAT_COUNT = 20;
 
 const busInput = document.getElementById("bus");
 const dateInput = document.getElementById("travelDate");
+const departureInput = document.getElementById("departureTime");
 const sourceInput = document.getElementById("source");
 const destinationInput = document.getElementById("destination");
 const seatGrid = document.getElementById("seatGrid");
@@ -396,6 +485,7 @@ function journeyIsValid() {
     return Boolean(
         busInput.value &&
         dateInput.value &&
+        departureInput.value &&
         sourceInput.value &&
         destinationInput.value &&
         sourceInput.value !== destinationInput.value
@@ -411,7 +501,9 @@ function sameJourney(record) {
     return record.bus === busInput.value &&
         record.date === dateInput.value &&
         record.source === sourceInput.value &&
-        record.destination === destinationInput.value;
+        record.destination === destinationInput.value &&
+        (!record.departureTime || record.departureTime === departureInput.value) &&
+        record.status !== "Cancelled";
 }
 
 function getBookedSeats() {
@@ -461,6 +553,7 @@ function renderSeats() {
     }
 
     updateSummary(booked);
+    window.dispatchEvent(new Event("smartBusBookingStateChanged"));
 }
 
 function toggleSeat(seat) {
@@ -486,6 +579,23 @@ function toggleSeat(seat) {
     renderSeats();
 }
 
+// Bridge between the booking seat grid and the 3D bus.
+window.tripxSelectSeat = function(seat) {
+    if (!journeyIsValid() || getBookedSeats().includes(seat)) return;
+    if (!selectedSeats.includes(seat)) toggleSeat(seat);
+};
+
+window.tripxDeselectSeat = function(seat) {
+    selectedSeats = selectedSeats.filter(s => s !== seat);
+    showMessage("");
+    renderSeats();
+};
+
+window.tripxClearSelectedSeats = function() {
+    selectedSeats = [];
+    showMessage("");
+    renderSeats();
+};
 function updateSummary(bookedSeats) {
     const fare = currentFare();
     const vacant = BUS_SEAT_COUNT - bookedSeats.length;
@@ -515,19 +625,41 @@ function renderHistory() {
     tbody.innerHTML = "";
 
     const records = readBookings().slice().reverse();
-
     document.getElementById("emptyHistory").hidden = records.length > 0;
+
+    let session = null;
+    try {
+        session = JSON.parse(localStorage.getItem("smartBusSession") || "null");
+    } catch (_) {}
+
+    const isAdmin = session && session.role === "admin";
 
     for (const record of records) {
         const row = document.createElement("tr");
+
+        const status = record.status || "Confirmed";
+        const travelStatus = record.travelStatus || "Pending";
+        const refund = Number(record.refundAmount || 0);
+
+        let displayStatus;
+
+        if (status === "Cancelled") {
+            displayStatus = "Cancelled | Refund: ₹" + refund.toFixed(2);
+        } else if (travelStatus === "Completed") {
+            displayStatus = "Travel Completed";
+        } else {
+            displayStatus = "Confirmed | Not Travelled";
+        }
 
         const values = [
             record.passenger,
             record.bus,
             record.source + " → " + record.destination,
             record.date,
+            record.departureTime || "-",
             record.seat,
             "₹" + record.fare,
+            displayStatus,
             record.bookedAt
                 ? new Date(record.bookedAt).toLocaleString()
                 : "-"
@@ -540,24 +672,86 @@ function renderHistory() {
         }
 
         const actionCell = document.createElement("td");
-        const cancelButton = document.createElement("button");
-        cancelButton.type = "button";
-        cancelButton.textContent = "Cancel";
-        cancelButton.className = "small-btn cancel-btn";
-        cancelButton.addEventListener("click", () => cancelBooking(record.id));
-        actionCell.appendChild(cancelButton);
-        row.appendChild(actionCell);
 
+        if (status === "Cancelled") {
+            actionCell.textContent = "Cancelled";
+        } else if (travelStatus === "Completed") {
+            actionCell.textContent = "Travel Completed";
+        } else {
+            if (isAdmin) {
+                const completeButton = document.createElement("button");
+                completeButton.type = "button";
+                completeButton.textContent = "Mark Travel Completed";
+                completeButton.className = "small-btn";
+                completeButton.addEventListener(
+                    "click",
+                    () => markTravelCompleted(record.id)
+                );
+                actionCell.appendChild(completeButton);
+            }
+
+            const cancelButton = document.createElement("button");
+            cancelButton.type = "button";
+            cancelButton.textContent = "Cancel";
+            cancelButton.className = "small-btn cancel-btn";
+            cancelButton.addEventListener("click", () => cancelBooking(record.id));
+            actionCell.appendChild(cancelButton);
+        }
+
+        row.appendChild(actionCell);
         tbody.appendChild(row);
     }
 }
 
+function markTravelCompleted(id) {
+    let session = null;
+
+    try {
+        session = JSON.parse(localStorage.getItem("smartBusSession") || "null");
+    } catch (_) {}
+
+    if (!session || session.role !== "admin") {
+        showMessage("Only admin can complete a journey.", true);
+        return;
+    }
+
+    const records = readBookings();
+    const record = records.find(r => r.id === id);
+
+    if (!record || record.status === "Cancelled") {
+        showMessage("Cancelled or missing booking cannot be completed.", true);
+        return;
+    }
+
+    if (record.travelStatus === "Completed") {
+        showMessage("This journey is already completed.", true);
+        return;
+    }
+
+    if (!confirm("Mark passenger " + record.passenger +
+        "'s journey as completed?")) {
+        return;
+    }
+
+    record.travelStatus = "Completed";
+    record.completedAt = new Date().toISOString();
+
+    saveBookings(records);
+    renderHistory();
+    renderSeats();
+
+    showMessage("Journey marked as Travel Completed.");
+}
 function cancelBooking(id) {
     const records = readBookings();
     const record = records.find(r => r.id === id);
 
-    if (!record) {
-        showMessage("Booking record not found.", true);
+    if (!record || record.status === "Cancelled") {
+        showMessage("Active booking not found.", true);
+        return;
+    }
+    if (record.travelStatus === "Completed") {
+        showMessage("Completed journeys cannot be cancelled.", true);
         return;
     }
 
@@ -567,17 +761,48 @@ function cancelBooking(id) {
     }
 
     try {
-        saveBookings(records.filter(r => r.id !== id));
+        let refundRate = 0;
+        let hoursLeft = 0;
+
+        if (record.date && record.departureTime) {
+            const departure = new Date(
+                record.date + "T" + record.departureTime
+            );
+            hoursLeft = (departure.getTime() - Date.now()) / 3600000;
+
+            if (hoursLeft > 24) {
+                refundRate = 0.90;
+            } else if (hoursLeft >= 12) {
+                refundRate = 0.75;
+            } else if (hoursLeft >= 4) {
+                refundRate = 0.50;
+            }
+        }
+
+        const refund = Number(record.fare || 0) * refundRate;
+
+        record.status = "Cancelled";
+        record.cancelledAt = new Date().toISOString();
+        record.refundRate = refundRate;
+        record.refundAmount = Number(refund.toFixed(2));
+
+        saveBookings(records);
         selectedSeats = [];
         renderSeats();
         renderHistory();
-        showMessage("Booking cancelled. The seat is now vacant.");
+
+        showMessage(
+            "Booking cancelled. Refund: ₹" +
+            record.refundAmount.toFixed(2) +
+            " (" + Math.round(refundRate * 100) +
+            "%). Seat is available again."
+        );
     } catch (error) {
         showMessage("Unable to cancel booking. Check browser storage.", true);
     }
 }
 
-[busInput, dateInput, sourceInput, destinationInput].forEach(input => {
+[busInput, dateInput, departureInput, sourceInput, destinationInput].forEach(input => {
     input.addEventListener("change", () => {
         selectedSeats = [];
         showMessage("");
@@ -602,6 +827,12 @@ document.getElementById("bookingForm").addEventListener("submit", event => {
 
     if (dateInput.value < todayString()) {
         showMessage("Please select today or a future journey date.", true);
+        return;
+    }
+    
+    const departureAt = new Date(dateInput.value + "T" + departureInput.value);
+    if (departureAt.getTime() <= Date.now()) {
+        showMessage("Please select a future departure time.", true);
         return;
     }
 
@@ -646,7 +877,11 @@ document.getElementById("bookingForm").addEventListener("submit", event => {
                 phone: phone,
                 bus: busInput.value,
                 date: dateInput.value,
-                source: sourceInput.value,
+                
+                departureTime: departureInput.value,
+                status: "Confirmed",
+                travelStatus: "Pending",
+                refundAmount: 0,source: sourceInput.value,
                 destination: destinationInput.value,
                 seat: seat,
                 fare: fare,
@@ -679,6 +914,55 @@ document.getElementById("bookingForm").addEventListener("submit", event => {
 renderSeats();
 renderHistory();
 </script>
+    
+<!-- TRIPX 3D BUS INTERIOR -->
+<section class="bus3d-section">
+    <h2>3D Bus Interior - Lighting &amp; Texture</h2>
+    <p style="margin:10px 0;color:#64748b;">
+        Select a seat in the 3D bus or use the controls below.
+    </p>
+
+    <div id="bus3d"></div>
+
+    <div class="seat-controls">
+        <button id="book3dSeat" type="button">Book Seat (B)</button>
+        <button id="vacate3dSeat" type="button">Make Vacant (V)</button>
+        <button id="reset3dSeats" type="button">Reset Seats (R)</button>
+    </div>
+
+    <p id="seatStatus">Loading 3D bus...</p>
+    <p style="margin-top:8px;color:#64748b;font-size:13px;">
+        Green: Vacant | Red: Booked | Blue: Selected
+    </p>
+</section>
+
+<!-- TRIPX 3D MOVING BUS -->
+<section class="bus-animation-section">
+    <h2>3D Bus Animation - Moving Bus</h2>
+    <p>
+        Watch the 3D bus move on the road with rotating wheels and animated surroundings.
+    </p>
+
+    <div id="busAnimation3D"></div>
+
+    <div class="bus-animation-controls">
+        <button id="busAnimPause" type="button">Pause</button>
+
+        <label for="busAnimSpeed">Bus Speed:</label>
+        <input id="busAnimSpeed" type="range"
+               min="0.5" max="2.5" step="0.1" value="1">
+
+        <span id="busAnimStatus">Bus is Moving</span>
+    </div>
+</section>
+
+<script type="module" src="bus3d.js"></script>
+<script type="module" src="./busanimation.js"></script>
+<script src="auth.js"></script>
 </body>
 </html>
-```
+
+
+
+
+

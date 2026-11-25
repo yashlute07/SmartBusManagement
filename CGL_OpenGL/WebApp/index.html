@@ -1,10 +1,10 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartBus | Management System</title>
+    <title>TripX | Bus Travel</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -133,7 +133,7 @@
         <div class="brand">
             <div class="brand-icon">SB</div>
             <div>
-                <h2>SmartBus</h2>
+                <h2>TripX</h2>
                 <span>Management System</span>
             </div>
         </div>
@@ -142,36 +142,36 @@
 
             <a href="#dashboard" id="dashboardLink"
                class="nav-item active">
-                <span class="nav-icon">⌂</span>
+                <span class="nav-icon">&#8962;</span>
                 <span>Dashboard</span>
             </a>
 
             <a href="buses.html" class="nav-item">
-                <span class="nav-icon">▣</span>
+                <span class="nav-icon">&#128652;</span>
                 <span>Bus Management</span>
             </a>
 
             <a href="passengers.html" class="nav-item">
-                <span class="nav-icon">♙</span>
+                <span class="nav-icon">&#128101;</span>
                 <span>Passengers</span>
             </a>
 
             <a href="booking.html" class="nav-item">
-                <span class="nav-icon">▤</span>
+                <span class="nav-icon">&#127915;</span>
                 <span>Seat Booking</span>
             </a>
 
             <a href="fare.html" class="nav-item">
-                <span class="nav-icon">₹</span>
+                <span class="nav-icon">&#8377;</span>
                 <span>Fare Calculator</span>
             </a>
 
             <a href="#history" id="historyLink" class="nav-item">
-                <span class="nav-icon">↺</span>
+                <span class="nav-icon">&#8635;</span>
                 <span>Travel History</span>
             </a>
-
-        </nav>
+    <a href="#coa4" id="coa4Link" class="nav-item"><span class="nav-icon">CPU</span><span>COA</span></a>
+</nav>
 
         <div class="sidebar-footer">
             <div class="system-status">
@@ -190,19 +190,17 @@
     <main class="main-content">
 
         <header class="topbar">
-            <div>
-                <p class="page-label">SMART BUS SYSTEM</p>
-                <h1 id="pageTitle">Dashboard</h1>
-            </div>
+    <div class="tripx-main-brand">
+        <h1 class="tripx-main-logo">TripX</h1>
+        <p class="tripx-dashboard-label" id="pageTitle">Dashboard</p>
+    </div>
 
-            <div class="profile">
-                <div class="profile-text">
-                    <strong>Admin</strong>
-                    <span>Project Operator</span>
-                </div>
-                <div class="avatar">A</div>
-            </div>
-        </header>
+    <div class="tripx-partner">
+        <span class="tripx-partner-label">TRAVEL PARTNER</span>
+        <strong>Khandesh Express</strong>
+        <small>Powered by TripX</small>
+    </div>
+</header>
 
         <!-- ORIGINAL DASHBOARD -->
         <div id="dashboardContent">
@@ -213,7 +211,7 @@
                         SEMESTER 3 INTEGRATED PROJECT
                     </span>
 
-                    <h2>Smart Bus &amp; Passenger Management</h2>
+                    <h2>Your Journey, Your Way</h2>
 
                     <p>
                         Manage buses, passengers, bookings and
@@ -244,10 +242,133 @@
                 </div>
             </section>
 
+                        <section class="tripx-search-panel">
+                <div class="tripx-search-heading">
+                    <div>
+                        <span class="tripx-eyebrow">TRAVEL MADE SIMPLE</span>
+                        <h2>Where would you like to go?</h2>
+                        <p>Explore routes, compare bus types and plan your next journey.</p>
+                    </div>
+                    <div class="tripx-rating-summary">
+                        <strong>4.5 <span>★</span></strong>
+                        <small>Sample passenger rating</small>
+                    </div>
+                </div>
+
+                <div class="tripx-search-fields">
+                    <label>
+                        <span>FROM</span>
+                        <select id="tripxFrom">
+                            <option value="Pune">Pune</option>
+                            <option value="Bhusawal">Bhusawal</option>
+                            <option value="Jalgaon">Jalgaon</option>
+                            <option value="Dhule">Dhule</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
+                            <option value="Solapur">Solapur</option>
+                            <option value="Nashik">Nashik</option>
+                        </select>
+                    </label>
+
+                    <div class="tripx-route-arrow">→</div>
+
+                    <label>
+                        <span>TO</span>
+                        <select id="tripxTo">
+                            <option value="Jalgaon">Jalgaon</option>
+                            <option value="Bhusawal">Bhusawal</option>
+                            <option value="Dhule">Dhule</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
+                            <option value="Solapur">Solapur</option>
+                            <option value="Nashik">Nashik</option>
+                            <option value="Pune">Pune</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        <span>JOURNEY DATE</span>
+                        <input id="tripxDate" type="date">
+                    </label>
+
+                    <button type="button" id="tripxSearchBtn">Search Buses →</button>
+                </div>
+
+                <div class="tripx-type-area">
+                    <div class="tripx-type-heading">
+                        <div>
+                            <span class="tripx-eyebrow">CHOOSE YOUR COMFORT</span>
+                            <h3>Bus type &amp; extra charges</h3>
+                        </div>
+                        <span class="tripx-demo-note">Sample pricing</span>
+                    </div>
+
+                    <div class="tripx-type-grid">
+                        <button type="button" class="tripx-type-card selected" data-type="nonac-seater">
+                            <span class="tripx-type-icon">🚌</span>
+                            <strong>Non-AC Seater</strong>
+                            <b>+₹0</b>
+                            <small>Base fare only</small>
+                        </button>
+                        <button type="button" class="tripx-type-card" data-type="ac-seater">
+                            <span class="tripx-type-icon">❄</span>
+                            <strong>AC Seater</strong>
+                            <b>+₹150</b>
+                            <small>Air-conditioned</small>
+                        </button>
+                        <button type="button" class="tripx-type-card" data-type="nonac-sleeper">
+                            <span class="tripx-type-icon">🛏</span>
+                            <strong>Non-AC Sleeper</strong>
+                            <b>+₹200</b>
+                            <small>Sleeping berth</small>
+                        </button>
+                        <button type="button" class="tripx-type-card" data-type="ac-sleeper">
+                            <span class="tripx-type-icon">🌙</span>
+                            <strong>AC Sleeper</strong>
+                            <b>+₹300</b>
+                            <small>AC sleeping berth</small>
+                        </button>
+                    </div>
+
+                    <div class="tripx-fare-result">
+                        <div>
+                            <span>ESTIMATED FARE</span>
+                            <strong id="tripxEstimatedFare">₹500</strong>
+                            <small id="tripxFareBreakdown">Base fare ₹500 + extra ₹0</small>
+                        </div>
+                        <div class="tripx-rating">
+                            <strong>★ 4.5/5</strong>
+                            <small>Illustrative demo rating</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <div id="tripxSearchResults" class="tripx-search-results" style="display:none;">
+                    <h3 id="tripxResultsHeading">Available Buses</h3>
+                    <p id="tripxResultsSummary"></p>
+                    <div id="tripxResultsList" class="tripx-results-list"></div>
+                </div>
+            <section class="tripx-route-strip">
+                <div>
+                    <span class="tripx-eyebrow">EXPLORE TRIPX</span>
+                    <h3>Popular Routes</h3>
+                </div>
+                <div class="tripx-route-chips">
+                    <span>Pune – Bhusawal</span>
+                    <span>Pune – Jalgaon</span>
+                    <span>Pune – Dhule</span>
+                    <span>Pune – Mumbai</span>
+                    <span>Pune – Chhatrapati Sambhajinagar</span>
+                    <span>Pune – Solapur</span>
+                    <span>Pune – Nashik</span>
+                </div>
+                <p class="tripx-demo-note">Routes, fares, ratings and schedules shown here are sample project data.</p>
+            </section>
             <section class="stats-grid">
 
                 <div class="stat-card">
-                    <div class="stat-icon blue">▣</div>
+                    <div class="stat-icon blue">&#128652;</div>
                     <div>
                         <span>Total Buses</span>
                         <strong>08</strong>
@@ -256,7 +377,7 @@
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon green">♙</div>
+                    <div class="stat-icon green">&#128101;</div>
                     <div>
                         <span>Passengers</span>
                         <strong>126</strong>
@@ -265,7 +386,7 @@
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon orange">▤</div>
+                    <div class="stat-icon orange">&#127915;</div>
                     <div>
                         <span>Bookings</span>
                         <strong id="bookingCount">94</strong>
@@ -274,7 +395,7 @@
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon purple">₹</div>
+                    <div class="stat-icon purple">&#8377;</div>
                     <div>
                         <span>Available Seats</span>
                         <strong>66</strong>
@@ -292,34 +413,34 @@
                             <span class="section-label">TRANSPORT</span>
                             <h3>Today's Bus Services</h3>
                         </div>
-                        <a href="buses.html" class="view-link">View all →</a>
+                        <a href="buses.html" class="view-link">View all &rarr;</a>
                     </div>
 
                     <div class="service-list">
 
                         <div class="service-row">
-                            <div class="route-icon">→</div>
+                            <div class="route-icon">&rarr;</div>
                             <div class="route-details">
-                                <strong>Pune <span>→</span> Nashik</strong>
-                                <small>Bus SB-101 • 08:30 AM</small>
+                                <strong>Pune <span>&rarr;</span> Nashik</strong>
+                                <small>Bus SB-101 &bull; 08:30 AM</small>
                             </div>
                             <span class="service-status available">12 seats</span>
                         </div>
 
                         <div class="service-row">
-                            <div class="route-icon">→</div>
+                            <div class="route-icon">&rarr;</div>
                             <div class="route-details">
-                                <strong>Pune <span>→</span> Mumbai</strong>
-                                <small>Bus SB-102 • 10:00 AM</small>
+                                <strong>Pune <span>&rarr;</span> Mumbai</strong>
+                                <small>Bus SB-102 &bull; 10:00 AM</small>
                             </div>
                             <span class="service-status available">08 seats</span>
                         </div>
 
                         <div class="service-row">
-                            <div class="route-icon">→</div>
+                            <div class="route-icon">&rarr;</div>
                             <div class="route-details">
-                                <strong>Pune <span>→</span> Satara</strong>
-                                <small>Bus SB-103 • 12:30 PM</small>
+                                <strong>Pune <span>&rarr;</span> Satara</strong>
+                                <small>Bus SB-103 &bull; 12:30 PM</small>
                             </div>
                             <span class="service-status limited">04 seats</span>
                         </div>
@@ -338,40 +459,40 @@
                     <div class="quick-actions">
 
                         <a href="passengers.html" class="action-card">
-                            <div class="action-icon blue">+</div>
+                            <div class="action-icon blue">&#8635;</div>
                             <div>
                                 <strong>Add Passenger</strong>
                                 <small>Register a passenger</small>
                             </div>
-                            <span>→</span>
+                            <span>&rarr;</span>
                         </a>
 
                         <a href="booking.html" class="action-card">
-                            <div class="action-icon green">▤</div>
+                            <div class="action-icon green">&#127915;</div>
                             <div>
                                 <strong>Book a Seat</strong>
                                 <small>Check seat availability</small>
                             </div>
-                            <span>→</span>
+                            <span>&rarr;</span>
                         </a>
 
                         <a href="fare.html" class="action-card">
-                            <div class="action-icon orange">₹</div>
+                            <div class="action-icon orange">&#8377;</div>
                             <div>
                                 <strong>Calculate Fare</strong>
                                 <small>Check destination fare</small>
                             </div>
-                            <span>→</span>
+                            <span>&rarr;</span>
                         </a>
 
                         <a href="#history" class="action-card"
                            id="quickHistory">
-                            <div class="action-icon blue">↺</div>
+                            <div class="action-icon blue">&#8635;</div>
                             <div>
                                 <strong>Travel History</strong>
                                 <small>View recorded journeys</small>
                             </div>
-                            <span>→</span>
+                            <span>&rarr;</span>
                         </a>
 
                     </div>
@@ -474,7 +595,7 @@
                 </label>
 
                 <label>
-                    Fare (₹)
+                    Fare (&#8377;)
                     <input id="fare" type="number"
                            min="0" step="0.01" required>
                 </label>
@@ -521,215 +642,351 @@
 
         </section>
 
+        <!-- DATA STRUCTURES -->
+        <section id="dsSection" class="panel" style="display:none;">
+
+            <div class="panel-header">
+                <div>
+                    <span class="section-label">DS PRACTICALS</span>
+                    <h3>Data Structures</h3>
+                </div>
+            </div>
+
+            <p>Perform Stack, Queue, Hashing and Sorting operations.</p>
+
+            <div class="ds-grid">
+
+                <div class="ds-card">
+                    <h3>Stack (LIFO)</h3>
+                    <input id="stackValue" type="text" placeholder="Enter value">
+                    <div class="ds-buttons">
+                        <button onclick="runDS('stack','push')">Push</button>
+                        <button onclick="runDS('stack','pop')">Pop</button>
+                        <button onclick="runDS('stack','peek')">Peek</button>
+                        <button onclick="runDS('stack','display')">Display</button>
+                        <button onclick="runDS('stack','reset')">Reset</button>
+                    </div>
+                    <p id="stackOutput" class="ds-output">Stack is empty.</p>
+                </div>
+
+                <div class="ds-card">
+                    <h3>Queue (FIFO)</h3>
+                    <input id="queueValue" type="text" placeholder="Enter value">
+                    <div class="ds-buttons">
+                        <button onclick="runDS('queue','enqueue')">Enqueue</button>
+                        <button onclick="runDS('queue','dequeue')">Dequeue</button>
+                        <button onclick="runDS('queue','peek')">Peek</button>
+                        <button onclick="runDS('queue','display')">Display</button>
+                        <button onclick="runDS('queue','reset')">Reset</button>
+                    </div>
+                    <p id="queueOutput" class="ds-output">Queue is empty.</p>
+                </div>
+
+                <div class="ds-card">
+                    <h3>Hashing (Linear Probing)</h3>
+                    <input id="hashValue" type="text" placeholder="Enter value">
+                    <div class="ds-buttons">
+                        <button onclick="runDS('hash','insert')">Insert</button>
+                        <button onclick="runDS('hash','search')">Search</button>
+                        <button onclick="runDS('hash','display')">Display</button>
+                        <button onclick="runDS('hash','reset')">Reset</button>
+                    </div>
+                    <p id="hashOutput" class="ds-output">Hash table is empty.</p>
+                </div>
+
+                <div class="ds-card">
+                    <h3>Sorting Algorithms</h3>
+                    <input id="sortValues" type="text" placeholder="Example: 45,12,8,30">
+                    <select id="sortAlgorithm">
+                        <option value="bubble">Bubble Sort</option>
+                        <option value="selection">Selection Sort</option>
+                        <option value="insertion">Insertion Sort</option>
+                    </select>
+                    <div class="ds-buttons">
+                        <button onclick="runDS('sort','sort')">Sort</button>
+                    </div>
+                    <p id="sortOutput" class="ds-output">Enter numbers to sort.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <style>
+            .ds-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-top: 20px;
+            }
+            .ds-card {
+                background: var(--card-bg, #ffffff);
+                border: 1px solid #dddddd;
+                border-radius: 12px;
+                padding: 18px;
+            }
+            .ds-card input, .ds-card select {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                box-sizing: border-box;
+            }
+            .ds-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .ds-buttons button {
+                padding: 8px 12px;
+                cursor: pointer;
+            }
+            .ds-output {
+                margin-top: 14px;
+                padding: 10px;
+                background: #f1f5f9;
+                color: #172033;
+                border-radius: 8px;
+                overflow-wrap: anywhere;
+            }
+        </style>
+
+        
+        <section id="coa4Section" class="panel" style="display:none; padding:20px;">
+            <h2>COA CO4 - Control Unit & Instruction Pipelining</h2>
+            <p>Explore instruction execution and five-stage pipelining.</p>
+
+            <div class="panel" style="padding:15px; margin:15px 0;">
+                <h3>1. Control Unit Simulation</h3>
+                <label>Select Instruction:</label>
+                <select id="coa4Instruction">
+                    <option>LOAD R1, 100</option>
+                    <option>ADD R1, R2</option>
+                    <option>SUB R1, R2</option>
+                    <option>MUL R3, R1, R2</option>
+                    <option>STORE R3, FARE</option>
+                </select>
+                <button type="button" onclick="runCOA4Control()">Execute Instruction</button>
+                <p id="coa4ControlOutput">Select an instruction and execute.</p>
+            </div>
+
+            <div class="panel" style="padding:15px; margin:15px 0;">
+                <h3>2. Five-Stage Instruction Pipeline</h3>
+                <p>IF = Instruction Fetch | ID = Instruction Decode</p>
+                <p>EX = Execute | MEM = Memory | WB = Write Back</p>
+                <h3>Clock Cycle: <span id="coa4Cycle">0</span></h3>
+                <button type="button" onclick="startCOA4Pipeline()">Start Pipeline</button>
+                <button type="button" onclick="resetCOA4Pipeline()">Reset</button>
+                <div id="coa4PipelineOutput" style="margin-top:15px;">
+                    Pipeline ready.
+                </div>
+            </div>
+
+            <div class="panel" style="padding:15px; margin:15px 0;">
+                <h3>3. Pipeline Hazards</h3>
+                <p>Understand Read After Write (RAW) data hazards.</p>
+                <button type="button" onclick="showCOA4Hazard()">Show Hazard</button>
+                <p id="coa4HazardOutput">Click to view hazard explanation.</p>
+            </div>
+        </section>
         <footer class="footer">
-            <span>SmartBus Management System</span>
-            <span>Semester 3 Integrated Project • 2026</span>
+            <span>TripX Bus Travel</span>
+            <span>Semester 3 Integrated Project &bull; 2026</span>
         </footer>
 
     </main>
 
-    <script>
-        const STORAGE_KEY = "smartBusTravelHistory";
+    <script src="tripx-data.js"></script>
+<script id="tripxSearchLogic">
+(function () {
+    "use strict";
 
-        const dashboardContent = document.getElementById("dashboardContent");
-        const historySection = document.getElementById("historySection");
-        const pageTitle = document.getElementById("pageTitle");
-        const dashboardLink = document.getElementById("dashboardLink");
-        const historyLink = document.getElementById("historyLink");
-        const historyForm = document.getElementById("historyForm");
-        const historyMessage = document.getElementById("historyMessage");
-        const historyTableBody = document.getElementById("historyTableBody");
-        const emptyHistory = document.getElementById("emptyHistory");
-        const journeyCount = document.getElementById("journeyCount");
-        const travelDateTime = document.getElementById("travelDateTime");
+    const from = document.getElementById("tripxFrom");
+    const to = document.getElementById("tripxTo");
+    const date = document.getElementById("tripxDate");
+    const searchBtn = document.getElementById("tripxSearchBtn");
+    const results = document.getElementById("tripxSearchResults");
+    const resultsList = document.getElementById("tripxResultsList");
+    const resultsHeading = document.getElementById("tripxResultsHeading");
+    const resultsSummary = document.getElementById("tripxResultsSummary");
+    const fareValue = document.getElementById("tripxEstimatedFare");
+    const fareBreakdown = document.getElementById("tripxFareBreakdown");
 
-        // Set the current date and time as the default.
-        function setCurrentDateTime() {
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            travelDateTime.value = now.toISOString().slice(0, 16);
-        }
+    if (!from || !to || !searchBtn || !window.TripXData) {
+        console.error("TripX search could not initialize.");
+        return;
+    }
 
-        // Read saved records safely.
-        function getHistory() {
-            try {
-                const records = JSON.parse(
-                    localStorage.getItem(STORAGE_KEY) || "[]"
-                );
+    const extras = {
+        "nonac-seater": 0,
+        "ac-seater": 150,
+        "nonac-sleeper": 200,
+        "ac-sleeper": 300
+    };
 
-                return Array.isArray(records) ? records : [];
-            } catch (error) {
-                return [];
-            }
-        }
+    const typeNames = {
+        "nonac-seater": "Non-AC Seater",
+        "ac-seater": "AC Seater",
+        "nonac-sleeper": "Non-AC Sleeper",
+        "ac-sleeper": "AC Sleeper"
+    };
 
-        // Save records to browser storage.
-        function saveHistory(records) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-        }
+    let selectedType = "nonac-seater";
 
-        // Switch between Dashboard and History.
-        function showPage(page) {
-            const showHistory = page === "history";
-
-            dashboardContent.classList.toggle("hidden", showHistory);
-            historySection.classList.toggle("visible", showHistory);
-
-            dashboardLink.classList.toggle("active", !showHistory);
-            historyLink.classList.toggle("active", showHistory);
-
-            pageTitle.textContent = showHistory ? "Travel History" : "Dashboard";
-
-            if (showHistory) {
-                renderHistory();
-            }
-        }
-
-        dashboardLink.addEventListener("click", function(event) {
-            event.preventDefault();
-            history.replaceState(null, "", "#dashboard");
-            showPage("dashboard");
+    function getRoute() {
+        return window.TripXData.routes.find(function (route) {
+            return (route.source === from.value && route.destination === to.value) ||
+                   (route.source === to.value && route.destination === from.value);
         });
+    }
 
-        historyLink.addEventListener("click", function(event) {
-            event.preventDefault();
-            history.replaceState(null, "", "#history");
-            showPage("history");
-        });
+    function updateFare() {
+        const route = getRoute();
+        if (!route) {
+            fareValue.textContent = "Not available";
+            fareBreakdown.textContent = "This route is not listed in TripX demo routes.";
+            return;
+        }
 
-        document.getElementById("quickHistory").addEventListener("click", function(event) {
-            event.preventDefault();
-            history.replaceState(null, "", "#history");
-            showPage("history");
-        });
+        const extra = extras[selectedType];
+        fareValue.textContent = "₹" + (route.fare + extra);
+        fareBreakdown.textContent =
+            "Base fare ₹" + route.fare + " + extra ₹" + extra;
+    }
 
-        // Render the saved journeys in the table.
-        function renderHistory() {
-            const records = getHistory().sort(
-                (a, b) => new Date(b.travelDateTime) - new Date(a.travelDateTime)
-            );
-
-            historyTableBody.replaceChildren();
-
-            journeyCount.textContent =
-                records.length + (records.length === 1 ? " journey" : " journeys");
-
-            emptyHistory.style.display = records.length ? "none" : "block";
-
-            records.forEach(function(record) {
-                const row = document.createElement("tr");
-
-                function addCell(value) {
-                    const cell = document.createElement("td");
-                    cell.textContent = value;
-                    row.appendChild(cell);
-                }
-
-                const date = new Date(record.travelDateTime);
-
-                addCell(record.passenger);
-                addCell(record.busNumber);
-                addCell(record.source + " → " + record.destination);
-
-                addCell(Number.isNaN(date.getTime())
-                    ? "Invalid date"
-                    : date.toLocaleDateString("en-IN"));
-
-                addCell(Number.isNaN(date.getTime())
-                    ? "Invalid time"
-                    : date.toLocaleTimeString("en-IN", {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }));
-
-                addCell("₹" + Number(record.fare).toFixed(2));
-
-                const actionCell = document.createElement("td");
-                const deleteButton = document.createElement("button");
-
-                deleteButton.type = "button";
-                deleteButton.textContent = "Delete";
-                deleteButton.className = "delete-btn";
-                deleteButton.setAttribute("aria-label", "Delete journey");
-
-                deleteButton.addEventListener("click", function() {
-                    const updatedRecords = getHistory().filter(
-                        item => item.id !== record.id
-                    );
-
-                    saveHistory(updatedRecords);
-                    renderHistory();
-                    historyMessage.textContent = "Journey deleted.";
-                });
-
-                actionCell.appendChild(deleteButton);
-                row.appendChild(actionCell);
-                historyTableBody.appendChild(row);
+    document.querySelectorAll(".tripx-type-card").forEach(function (card) {
+        card.addEventListener("click", function () {
+            document.querySelectorAll(".tripx-type-card").forEach(function (item) {
+                item.classList.remove("selected");
             });
+            card.classList.add("selected");
+            selectedType = card.dataset.type;
+            updateFare();
+        });
+    });
+
+    from.addEventListener("change", updateFare);
+    to.addEventListener("change", updateFare);
+
+    searchBtn.addEventListener("click", function () {
+        const source = from.value;
+        const destination = to.value;
+
+        results.style.display = "block";
+        resultsList.innerHTML = "";
+
+        if (source === destination) {
+            resultsHeading.textContent = "Invalid route";
+            resultsSummary.textContent = "Source and destination must be different.";
+            resultsList.textContent = "Please select two different cities.";
+            return;
         }
 
-        // Record a new journey.
-        historyForm.addEventListener("submit", function(event) {
-            event.preventDefault();
+        if (date && date.value) {
+            const selectedDate = new Date(date.value + "T00:00:00");
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
 
-            const passenger = document.getElementById("passenger").value.trim();
-            const busNumber = document.getElementById("busNumber").value.trim();
-            const source = document.getElementById("source").value.trim();
-            const destination = document.getElementById("destination").value.trim();
-            const fareValue = document.getElementById("fare").value;
-            const dateValue = travelDateTime.value;
-            const fare = Number(fareValue);
-
-            if (!passenger || !busNumber || !source || !destination ||
-                !dateValue || fareValue === "" || !Number.isFinite(fare) ||
-                fare < 0 || !Number.isFinite(new Date(dateValue).getTime())) {
-                historyMessage.textContent = "Please enter valid journey details.";
+            if (selectedDate < today) {
+                resultsHeading.textContent = "Invalid journey date";
+                resultsSummary.textContent = "Please select today or a future date.";
+                resultsList.textContent = "Choose a valid journey date.";
                 return;
             }
+        }
 
-            const records = getHistory();
+        const route = getRoute();
 
-            records.push({
-                id: (crypto.randomUUID
-                    ? crypto.randomUUID()
-                    : Date.now().toString() + Math.random().toString(16).slice(2)),
-                passenger: passenger,
-                busNumber: busNumber,
-                source: source,
-                destination: destination,
-                fare: fare,
-                travelDateTime: new Date(dateValue).toISOString()
+        if (!route) {
+            resultsHeading.textContent = "Route not available";
+            resultsSummary.textContent = source + " to " + destination;
+            resultsList.textContent = "This route is not currently listed in TripX demo routes.";
+            return;
+        }
+
+        const matchingBuses = window.TripXData.getActiveBuses().filter(function (bus) {
+            const sameDirection =
+                bus.source === source && bus.destination === destination;
+            const reverseDirection =
+                bus.source === destination && bus.destination === source;
+            return sameDirection || reverseDirection;
+        });
+
+        resultsHeading.textContent = "Available Buses";
+        resultsSummary.textContent =
+            source + " → " + destination +
+            (date && date.value ? " | Journey date: " + date.value : "") +
+            " | " + matchingBuses.length + " active bus(es) found";
+
+        if (matchingBuses.length === 0) {
+            resultsList.textContent = "No active buses found for this route.";
+            return;
+        }
+
+        matchingBuses.forEach(function (bus) {
+            const card = document.createElement("article");
+            card.className = "tripx-result-card";
+
+            const title = document.createElement("h4");
+            title.textContent = bus.busNumber;
+
+            const operator = document.createElement("p");
+            operator.textContent = "Operator: " + (bus.operator || "TripX");
+
+            const routeText = document.createElement("p");
+            routeText.textContent = source + " → " + destination;
+
+            const capacity = document.createElement("p");
+            capacity.textContent = "Bus capacity: " + bus.capacity + " passengers";
+
+            const type = document.createElement("p");
+            type.textContent = "Selected type: " + typeNames[selectedType];
+
+            const fare = document.createElement("strong");
+            fare.textContent = "Estimated fare: ₹" + (route.fare + extras[selectedType]);
+
+            const rating = document.createElement("small");
+            rating.textContent = "★ 4.5/5 – illustrative demo rating";
+
+            const book = document.createElement("button");
+            book.type = "button";
+            book.textContent = "Continue to Booking";
+            book.addEventListener("click", function () {
+                const params = new URLSearchParams({
+                    bus: bus.id,
+                    from: source,
+                    to: destination,
+                    date: date ? date.value : "",
+                    type: selectedType,
+                    fare: String(route.fare + extras[selectedType])
+                });
+                window.location.href = "booking.html?" + params.toString();
             });
 
-            try {
-                saveHistory(records);
-                historyForm.reset();
-                setCurrentDateTime();
-                renderHistory();
-                historyMessage.textContent = "Journey saved successfully!";
-            } catch (error) {
-                historyMessage.textContent =
-                    "Could not save the journey. Browser storage may be full or disabled.";
-            }
+            card.append(title, operator, routeText, capacity, type, fare, rating, book);
+            resultsList.appendChild(card);
         });
+    });
 
-        // Clear all journey records after confirmation.
-        document.getElementById("clearHistory").addEventListener("click", function() {
-            if (confirm("Are you sure you want to delete all travel history?")) {
-                try {
-                    localStorage.removeItem(STORAGE_KEY);
-                    renderHistory();
-                    historyMessage.textContent = "All travel history cleared.";
-                } catch (error) {
-                    historyMessage.textContent = "Could not clear travel history.";
-                }
-            }
-        });
+    updateFare();
+})();
+</script>
+    <script src="script.js"></script>
+    <script src="ds.js"></script>
+    <script src="coa4.js"></script>
 
-        // Initialize the page.
-        setCurrentDateTime();
-        showPage(location.hash === "#history" ? "history" : "dashboard");
-    </script>
-
+    <script src="auth.js"></script>
+    <script src="chatbot.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

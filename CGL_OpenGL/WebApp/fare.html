@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,32 +115,32 @@
 
         <nav class="navigation">
             <a href="index.html" class="nav-item">
-                <span class="nav-icon">⌂</span>
+                <span class="nav-icon">&#8962;</span>
                 <span>Dashboard</span>
             </a>
 
             <a href="buses.html" class="nav-item">
-                <span class="nav-icon">▣</span>
+                <span class="nav-icon">&#128652;</span>
                 <span>Bus Management</span>
             </a>
 
             <a href="passengers.html" class="nav-item">
-                <span class="nav-icon">♙</span>
+                <span class="nav-icon">&#128101;</span>
                 <span>Passengers</span>
             </a>
 
             <a href="booking.html" class="nav-item">
-                <span class="nav-icon">▤</span>
+                <span class="nav-icon">&#127915;</span>
                 <span>Seat Booking</span>
             </a>
 
             <a href="fare.html" class="nav-item active">
-                <span class="nav-icon">₹</span>
+                <span class="nav-icon">&#8377;</span>
                 <span>Fare Calculator</span>
             </a>
 
             <a href="index.html#history" class="nav-item">
-                <span class="nav-icon">↺</span>
+                <span class="nav-icon">&#8635;</span>
                 <span>Travel History</span>
             </a>
         </nav>
@@ -206,6 +206,15 @@
                     </select>
                 </label>
 
+                <label for="busType">
+                    Bus Type
+                    <select id="busType" required>
+                        <option value="nonac-seater">Non-AC Seater (+₹0)</option>
+                        <option value="ac-seater">AC Seater (+₹150)</option>
+                        <option value="nonac-sleeper">Non-AC Sleeper (+₹200)</option>
+                        <option value="ac-sleeper">AC Sleeper (+₹300)</option>
+                    </select>
+                </label>
                 <button type="submit" class="calculate-button">
                     Calculate Fare
                 </button>
@@ -216,7 +225,7 @@
                  aria-live="polite">
 
                 <p>Estimated Bus Fare</p>
-                <h2 id="fareAmount">₹0</h2>
+                <h2 id="fareAmount">â‚¹0</h2>
                 <p id="routeDetails"></p>
                 <p id="fareExplanation"></p>
 
@@ -232,32 +241,68 @@
 
         <footer class="footer">
             <span>SmartBus Management System</span>
-            <span>Semester 3 Integrated Project • 2026</span>
+            <span>Semester 3 Integrated Project â€¢ 2026</span>
         </footer>
 
     </main>
 
+    <script src="tripx-data.js"></script>
     <script>
-        // Fixed destination-based fares from the project configuration.
-        const destinationFares = {
-            Pune: 20,
-            Nashik: 50,
-            Mumbai: 80
-        };
+    const fareForm = document.getElementById("fareForm");
+    const sourceInput = document.getElementById("source");
+    const destinationInput = document.getElementById("destination");
+    const busTypeInput = document.getElementById("busType");
+    const fareResult = document.getElementById("fareResult");
+    const fareAmount = document.getElementById("fareAmount");
+    const routeDetails = document.getElementById("routeDetails");
+    const fareExplanation = document.getElementById("fareExplanation");
 
-        const fareForm = document.getElementById("fareForm");
-        const sourceInput = document.getElementById("source");
-        const destinationInput = document.getElementById("destination");
-        const fareResult = document.getElementById("fareResult");
-        const fareAmount = document.getElementById("fareAmount");
-        const routeDetails = document.getElementById("routeDetails");
-        const fareExplanation = document.getElementById("fareExplanation");
+    const extras = {
+        "nonac-seater": 0,
+        "ac-seater": 150,
+        "nonac-sleeper": 200,
+        "ac-sleeper": 300
+    };
+
+    const typeNames = {
+        "nonac-seater": "Non-AC Seater",
+        "ac-seater": "AC Seater",
+        "nonac-sleeper": "Non-AC Sleeper",
+        "ac-sleeper": "AC Sleeper"
+    };
+
+    if (!window.TripXData || !Array.isArray(window.TripXData.routes)) {
+        fareExplanation.textContent = "TripX route data could not be loaded.";
+    } else {
+        const routes = window.TripXData.routes;
+        const cities = [...new Set(
+            routes.flatMap(route => [route.source, route.destination])
+        )];
+
+        function populateCities(select, placeholder) {
+            select.innerHTML = "";
+            const first = document.createElement("option");
+            first.value = "";
+            first.textContent = placeholder;
+            select.appendChild(first);
+
+            cities.forEach(city => {
+                const option = document.createElement("option");
+                option.value = city;
+                option.textContent = city;
+                select.appendChild(option);
+            });
+        }
+
+        populateCities(sourceInput, "Select source");
+        populateCities(destinationInput, "Select destination");
 
         fareForm.addEventListener("submit", function(event) {
             event.preventDefault();
 
             const source = sourceInput.value;
             const destination = destinationInput.value;
+            const selectedType = busTypeInput.value;
 
             fareResult.classList.remove("show");
 
@@ -271,24 +316,34 @@
                 return;
             }
 
-            if (!Object.hasOwn(destinationFares, destination)) {
-                alert("Fare is not configured for this destination.");
+            const route = routes.find(route =>
+                (route.source === source && route.destination === destination) ||
+                (route.source === destination && route.destination === source)
+            );
+
+            if (!route) {
+                alert("This route is not available in TripX routes.");
                 return;
             }
 
-            const fare = destinationFares[destination];
+            const extra = extras[selectedType];
+            const totalFare = route.fare + extra;
 
-            fareAmount.textContent = "₹" + fare;
-            routeDetails.textContent =
-                source + " → " + destination;
+            fareAmount.textContent = "₹" + totalFare;
+            routeDetails.textContent = source + " → " + destination;
 
             fareExplanation.textContent =
-                "Configured fare for destination " +
-                destination + ": ₹" + fare;
+                "Base fare: ₹" + route.fare +
+                " + " + typeNames[selectedType] +
+                " extra: ₹" + extra +
+                " | Total fare: ₹" + totalFare;
 
             fareResult.classList.add("show");
         });
-    </script>
+    }
+</script>
 
 </body>
 </html>
+
+

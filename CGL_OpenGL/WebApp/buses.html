@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -194,14 +194,52 @@
             border-radius: 6px;
             cursor: pointer;
         }
-    </style>
+    
+/* 3D Bus Visualization */
+.bus3d-section {
+    background: white;
+    margin-top: 28px;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+#bus3d {
+    width: 100%;
+    height: 520px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #101827;
+}
+#bus3d canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.seat-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+.seat-controls button {
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 7px;
+    color: white;
+    cursor: pointer;
+    background: #2563eb;
+}
+#vacate3dSeat { background: #64748b; }
+#reset3dSeats { background: #dc2626; }
+#seatStatus { margin-top: 12px; color: #334155; font-weight: bold; }
+</style>
 </head>
 
 <body>
 
     <div class="header">
         <div>
-            <h1>🚌 Smart Bus Management System</h1>
+            <h1>&#128652; Smart Bus Management System</h1>
             <span>Bus Management Module</span>
         </div>
 
@@ -240,7 +278,7 @@
 
                     <p><strong>Driver:</strong> Rajesh Patil</p>
 
-                    <p><strong>Route:</strong> Pune → Nashik</p>
+        <p><strong>Route:</strong> Pune &#8594; Nashik</p>
 
                     <p><strong>Capacity:</strong> 40 Passengers</p>
 
@@ -276,7 +314,7 @@
 
                     <p><strong>Driver:</strong> Suresh More</p>
 
-                    <p><strong>Route:</strong> Pune → Mumbai</p>
+        <p><strong>Route:</strong> Pune &#8594; Mumbai</p>
 
                     <p><strong>Capacity:</strong> 40 Passengers</p>
 
@@ -314,7 +352,7 @@
 
                     <p><strong>Driver:</strong> Amit Jadhav</p>
 
-                    <p><strong>Route:</strong> Pune → Kolhapur</p>
+        <p><strong>Route:</strong> Pune &#8594; Kolhapur</p>
 
                     <p><strong>Capacity:</strong> 40 Passengers</p>
 
@@ -339,8 +377,80 @@
         </div>
 
 
-        <a href="index.html" class="back">
-            ← Back to Dashboard
+        <section class="bus3d-section">
+    <h2>3D Bus Interior - Lighting & Texture</h2>
+    <p style="margin:10px 0;color:#64748b;">Select a seat in the 3D bus or use the controls below.</p>
+    <div id="bus3d"></div>
+    <div class="seat-controls">
+        <button id="book3dSeat">Book Seat (B)</button>
+        <button id="vacate3dSeat">Make Vacant (V)</button>
+        <button id="reset3dSeats">Reset Seats (R)</button>
+    </div>
+    <p id="seatStatus">Loading 3D bus...</p>
+    <p style="margin-top:8px;color:#64748b;font-size:13px;">Green: Vacant | Red: Booked | Blue: Selected</p>
+</section>
+
+<section class="bus3d-section" id="projectionViewing">
+    <h2>CO4 - Projection & Viewing</h2>
+    <p style="margin:10px 0;color:#64748b;">
+        2D Orthographic Projection - Smart Bus Visualization
+    </p>
+    <canvas id="busProjectionCanvas"
+        width="800" height="600"
+        style="width:100%;max-width:800px;height:auto;background:white;border:1px solid #ddd;border-radius:10px;">
+    </canvas>
+    <p style="margin-top:8px;color:#64748b;font-size:13px;">
+        Bus Body | Windows | Wheels | 2D Orthographic Projection
+    </p>
+</section>
+
+
+<section class="bus3d-section" id="clippingSection">
+    <h2>CO5 - Cohen-Sutherland Line Clipping</h2>
+    <p style="margin:10px 0;color:#64748b;">
+        Red: Original Lines | Green: Clipped Lines | Blue: Clipping Window
+    </p>
+    <canvas id="busClippingCanvas"
+        width="800" height="500"
+        style="width:100%;max-width:800px;height:auto;background:white;border:1px solid #ddd;border-radius:10px;">
+    </canvas>
+    <p style="margin-top:8px;color:#64748b;font-size:13px;">
+        2D Line Clipping using Cohen-Sutherland Algorithm
+    </p>
+</section>
+
+
+<section class="bus3d-section" id="polygonClippingSection">
+    <h2>CO5 - Sutherland-Hodgman Polygon Clipping</h2>
+    <p style="margin:10px 0;color:#64748b;">
+        Red: Original Polygon | Green: Clipped Polygon | Blue: Clipping Window
+    </p>
+    <canvas id="busPolygonClippingCanvas"
+        width="800" height="500"
+        style="width:100%;max-width:800px;height:auto;background:white;border:1px solid #ddd;border-radius:10px;">
+    </canvas>
+    <p style="margin-top:8px;color:#64748b;font-size:13px;">
+        2D Polygon Clipping using Sutherland-Hodgman Algorithm
+    </p>
+</section>
+
+<section class="bus-animation-section">
+    <h2>3D Bus Animation - Moving Bus</h2>
+    <p>Watch the 3D bus move on the road with rotating wheels and animated surroundings.</p>
+
+    <div id="busAnimation3D" style="width:100%; height:480px; background:#9bd3f5; border-radius:12px; overflow:hidden;"></div>
+
+    <div class="bus-animation-controls" style="margin-top:15px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+        <button id="busAnimPause" type="button">Pause</button>
+
+        <label for="busAnimSpeed">Bus Speed:</label>
+        <input id="busAnimSpeed" type="range" min="0.5" max="2.5" step="0.1" value="1">
+
+        <span id="busAnimStatus">Bus is Moving</span>
+    </div>
+</section>
+<a href="index.html" class="back">
+            &larr; Back to Dashboard
         </a>
 
     </div>
@@ -369,7 +479,7 @@
             <input
                 type="text"
                 id="route"
-                placeholder="Route (e.g. Pune → Mumbai)"
+                placeholder="Route (e.g. Pune &#8594; Mumbai)"
             >
 
             <input
@@ -399,12 +509,24 @@
     </div>
 
 
+    <script src="tripx-data.js"></script>
     <script>
 
+        function isAdminSession() {
+            try {
+                const session = JSON.parse(localStorage.getItem("smartBusSession") || "null");
+                return session && session.role === "admin";
+            } catch (_) {
+                return false;
+            }
+        }
+
         function openModal() {
-
+            if (!isAdminSession()) {
+                alert("Only Admin can add a new bus.");
+                return;
+            }
             document.getElementById("busModal").style.display = "flex";
-
         }
 
 
@@ -416,111 +538,61 @@
 
 
         function addBus() {
-
-            let busNumber =
-                document.getElementById("busNumber").value;
-
-            let driver =
-                document.getElementById("driver").value;
-
-            let route =
-                document.getElementById("route").value;
-
-            let capacity =
-                document.getElementById("capacity").value;
-
-
-            if (
-                busNumber === "" ||
-                driver === "" ||
-                route === "" ||
-                capacity === ""
-            ) {
-
-                alert("Please fill all fields.");
-
+            if (!isAdminSession()) {
+                alert("Only Admin can add a new bus.");
                 return;
-
             }
+            const busNumber = document.getElementById("busNumber").value;
+            const driver = document.getElementById("driver").value;
+            const route = document.getElementById("route").value;
+            const capacity = document.getElementById("capacity").value;
 
+            try {
+                if (!window.TripXData) {
+                    throw new Error("TripX data system is not loaded. Please refresh the page.");
+                }
 
-            let card = document.createElement("div");
+                window.TripXData.addBus({
+                    busNumber,
+                    driver,
+                    route,
+                    capacity
+                });
 
-            card.className = "bus-card";
+                window.TripXData.renderBusCards(
+                    document.getElementById("busGrid")
+                );
 
+                closeModal();
 
-            card.innerHTML = `
+                document.getElementById("busNumber").value = "";
+                document.getElementById("driver").value = "";
+                document.getElementById("route").value = "";
+                document.getElementById("capacity").value = "";
 
-                <div class="bus-header">
-
-                    <h3>${busNumber}</h3>
-
-                    <span class="status active">
-                        ACTIVE
-                    </span>
-
-                </div>
-
-                <div class="bus-info">
-
-                    <p>
-                        <strong>Driver:</strong>
-                        ${driver}
-                    </p>
-
-                    <p>
-                        <strong>Route:</strong>
-                        ${route}
-                    </p>
-
-                    <p>
-                        <strong>Capacity:</strong>
-                        ${capacity} Passengers
-                    </p>
-
-                    <p>
-                        <strong>Available Seats:</strong>
-                        ${capacity}
-                    </p>
-
-                </div>
-
-                <div class="progress">
-
-                    <p style="font-size:13px; margin-bottom:6px;">
-                        Occupancy: 0%
-                    </p>
-
-                    <div class="progress-bar">
-
-                        <div
-                            class="progress-fill"
-                            style="width:0%">
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `;
-
-
-            document
-                .getElementById("busGrid")
-                .appendChild(card);
-
-
-            closeModal();
-
-
-            document.getElementById("busNumber").value = "";
-            document.getElementById("driver").value = "";
-            document.getElementById("route").value = "";
-            document.getElementById("capacity").value = "";
-
+                alert("Bus successfully added and saved!");
+            } catch (error) {
+                alert(error.message);
+            }
         }
 
     </script>
 
+<script type="module" src="bus3d.js"></script>
+<script src="busprojection.js"></script>
+<script src="busclipping.js"></script>
+<script src="./buspolygonclipping.js"></script>
+<script type="module" src="./busanimation.js"></script>
+    <script src="auth.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
