@@ -1,6 +1,6 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -140,8 +140,7 @@
 
         <nav class="navigation">
 
-            <a href="#dashboard" id="dashboardLink"
-               class="nav-item active">
+            <a href="#dashboard" id="dashboardLink" class="nav-item active">
                 <span class="nav-icon">&#8962;</span>
                 <span>Dashboard</span>
             </a>
@@ -170,8 +169,8 @@
                 <span class="nav-icon">&#8635;</span>
                 <span>Travel History</span>
             </a>
-    <a href="#coa4" id="coa4Link" class="nav-item"><span class="nav-icon">CPU</span><span>COA</span></a>
-</nav>
+            <a href="#coa4" id="coa4Link" class="nav-item"><span class="nav-icon">CPU</span><span>COA</span></a>
+        </nav>
 
         <div class="sidebar-footer">
             <div class="system-status">
@@ -190,17 +189,17 @@
     <main class="main-content">
 
         <header class="topbar">
-    <div class="tripx-main-brand">
-        <h1 class="tripx-main-logo">TripX</h1>
-        <p class="tripx-dashboard-label" id="pageTitle">Dashboard</p>
-    </div>
+            <div class="tripx-main-brand">
+                <h1 class="tripx-main-logo">TripX</h1>
+                <p class="tripx-dashboard-label" id="pageTitle">Dashboard</p>
+            </div>
 
-    <div class="tripx-partner">
-        <span class="tripx-partner-label">TRAVEL PARTNER</span>
-        <strong>Khandesh Express</strong>
-        <small>Powered by TripX</small>
-    </div>
-</header>
+            <div class="tripx-partner">
+                <span class="tripx-partner-label">TRAVEL PARTNER</span>
+                <strong>Khandesh Express</strong>
+                <small>Powered by TripX</small>
+            </div>
+        </header>
 
         <!-- ORIGINAL DASHBOARD -->
         <div id="dashboardContent">
@@ -242,7 +241,7 @@
                 </div>
             </section>
 
-                        <section class="tripx-search-panel">
+            <section class="tripx-search-panel">
                 <div class="tripx-search-heading">
                     <div>
                         <span class="tripx-eyebrow">TRAVEL MADE SIMPLE</span>
@@ -259,6 +258,15 @@
                     <label>
                         <span>FROM</span>
                         <select id="tripxFrom">
+                            <option value="Wai">Wai</option>
+                            <option value="Mahabaleshwar">Mahabaleshwar</option>
+                            <option value="Satara">Satara</option>
+                            <option value="Karad">Karad</option>
+                            <option value="Kolhapur">Kolhapur</option>
+                            <option value="Sangli">Sangli</option>
+                            <option value="Lonavala">Lonavala</option>
+                            <option value="Thane">Thane</option>
+                            <option value="Navi Mumbai">Navi Mumbai</option>
                             <option value="Pune">Pune</option>
                             <option value="Bhusawal">Bhusawal</option>
                             <option value="Jalgaon">Jalgaon</option>
@@ -275,6 +283,15 @@
                     <label>
                         <span>TO</span>
                         <select id="tripxTo">
+                            <option value="Wai">Wai</option>
+                            <option value="Mahabaleshwar">Mahabaleshwar</option>
+                            <option value="Satara">Satara</option>
+                            <option value="Karad">Karad</option>
+                            <option value="Kolhapur">Kolhapur</option>
+                            <option value="Sangli">Sangli</option>
+                            <option value="Lonavala">Lonavala</option>
+                            <option value="Thane">Thane</option>
+                            <option value="Navi Mumbai">Navi Mumbai</option>
                             <option value="Jalgaon">Jalgaon</option>
                             <option value="Bhusawal">Bhusawal</option>
                             <option value="Dhule">Dhule</option>
@@ -344,11 +361,11 @@
                 </div>
             </section>
 
-                <div id="tripxSearchResults" class="tripx-search-results" style="display:none;">
-                    <h3 id="tripxResultsHeading">Available Buses</h3>
-                    <p id="tripxResultsSummary"></p>
-                    <div id="tripxResultsList" class="tripx-results-list"></div>
-                </div>
+            <div id="tripxSearchResults" class="tripx-search-results" style="display:none;">
+                <h3 id="tripxResultsHeading">Available Buses</h3>
+                <p id="tripxResultsSummary"></p>
+                <div id="tripxResultsList" class="tripx-results-list"></div>
+            </div>
             <section class="tripx-route-strip">
                 <div>
                     <span class="tripx-eyebrow">EXPLORE TRIPX</span>
@@ -485,8 +502,7 @@
                             <span>&rarr;</span>
                         </a>
 
-                        <a href="#history" class="action-card"
-                           id="quickHistory">
+                        <a href="#history" class="action-card" id="quickHistory">
                             <div class="action-icon blue">&#8635;</div>
                             <div>
                                 <strong>Travel History</strong>
@@ -572,38 +588,32 @@
 
                 <label>
                     Passenger Name
-                    <input id="passenger" type="text"
-                           maxlength="80" required>
+                    <input id="passenger" type="text" maxlength="80" required>
                 </label>
 
                 <label>
                     Bus Number
-                    <input id="busNumber" type="text"
-                           placeholder="SB-101" maxlength="30" required>
+                    <input id="busNumber" type="text" placeholder="SB-101" maxlength="30" required>
                 </label>
 
                 <label>
                     Source
-                    <input id="source" type="text"
-                           maxlength="80" required>
+                    <input id="source" type="text" maxlength="80" required>
                 </label>
 
                 <label>
                     Destination
-                    <input id="destination" type="text"
-                           maxlength="80" required>
+                    <input id="destination" type="text" maxlength="80" required>
                 </label>
 
                 <label>
                     Fare (&#8377;)
-                    <input id="fare" type="number"
-                           min="0" step="0.01" required>
+                    <input id="fare" type="number" min="0" step="0.01" required>
                 </label>
 
                 <label>
                     Travel Date and Time
-                    <input id="travelDateTime"
-                           type="datetime-local" required>
+                    <input id="travelDateTime" type="datetime-local" required>
                 </label>
 
                 <button type="submit" class="history-btn">
@@ -612,8 +622,7 @@
 
             </form>
 
-            <p id="historyMessage" class="history-message"
-               role="status" aria-live="polite"></p>
+            <p id="historyMessage" class="history-message" role="status" aria-live="polite"></p>
 
             <div class="history-table-wrapper">
                 <table class="history-table">
@@ -718,27 +727,33 @@
                 gap: 20px;
                 margin-top: 20px;
             }
+
             .ds-card {
                 background: var(--card-bg, #ffffff);
                 border: 1px solid #dddddd;
                 border-radius: 12px;
                 padding: 18px;
             }
-            .ds-card input, .ds-card select {
+
+            .ds-card input,
+            .ds-card select {
                 width: 100%;
                 padding: 10px;
                 margin: 10px 0;
                 box-sizing: border-box;
             }
+
             .ds-buttons {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 8px;
             }
+
             .ds-buttons button {
                 padding: 8px 12px;
                 cursor: pointer;
             }
+
             .ds-output {
                 margin-top: 14px;
                 padding: 10px;
@@ -749,7 +764,7 @@
             }
         </style>
 
-        
+
         <section id="coa4Section" class="panel" style="display:none; padding:20px;">
             <h2>COA CO4 - Control Unit & Instruction Pipelining</h2>
             <p>Explore instruction execution and five-stage pipelining.</p>
@@ -795,180 +810,180 @@
     </main>
 
     <script src="tripx-data.js"></script>
-<script id="tripxSearchLogic">
-(function () {
-    "use strict";
+    <script id="tripxSearchLogic">
+        (function () {
+            "use strict";
 
-    const from = document.getElementById("tripxFrom");
-    const to = document.getElementById("tripxTo");
-    const date = document.getElementById("tripxDate");
-    const searchBtn = document.getElementById("tripxSearchBtn");
-    const results = document.getElementById("tripxSearchResults");
-    const resultsList = document.getElementById("tripxResultsList");
-    const resultsHeading = document.getElementById("tripxResultsHeading");
-    const resultsSummary = document.getElementById("tripxResultsSummary");
-    const fareValue = document.getElementById("tripxEstimatedFare");
-    const fareBreakdown = document.getElementById("tripxFareBreakdown");
+            const from = document.getElementById("tripxFrom");
+            const to = document.getElementById("tripxTo");
+            const date = document.getElementById("tripxDate");
+            const searchBtn = document.getElementById("tripxSearchBtn");
+            const results = document.getElementById("tripxSearchResults");
+            const resultsList = document.getElementById("tripxResultsList");
+            const resultsHeading = document.getElementById("tripxResultsHeading");
+            const resultsSummary = document.getElementById("tripxResultsSummary");
+            const fareValue = document.getElementById("tripxEstimatedFare");
+            const fareBreakdown = document.getElementById("tripxFareBreakdown");
 
-    if (!from || !to || !searchBtn || !window.TripXData) {
-        console.error("TripX search could not initialize.");
-        return;
-    }
-
-    const extras = {
-        "nonac-seater": 0,
-        "ac-seater": 150,
-        "nonac-sleeper": 200,
-        "ac-sleeper": 300
-    };
-
-    const typeNames = {
-        "nonac-seater": "Non-AC Seater",
-        "ac-seater": "AC Seater",
-        "nonac-sleeper": "Non-AC Sleeper",
-        "ac-sleeper": "AC Sleeper"
-    };
-
-    let selectedType = "nonac-seater";
-
-    function getRoute() {
-        return window.TripXData.routes.find(function (route) {
-            return (route.source === from.value && route.destination === to.value) ||
-                   (route.source === to.value && route.destination === from.value);
-        });
-    }
-
-    function updateFare() {
-        const route = getRoute();
-        if (!route) {
-            fareValue.textContent = "Not available";
-            fareBreakdown.textContent = "This route is not listed in TripX demo routes.";
-            return;
-        }
-
-        const extra = extras[selectedType];
-        fareValue.textContent = "₹" + (route.fare + extra);
-        fareBreakdown.textContent =
-            "Base fare ₹" + route.fare + " + extra ₹" + extra;
-    }
-
-    document.querySelectorAll(".tripx-type-card").forEach(function (card) {
-        card.addEventListener("click", function () {
-            document.querySelectorAll(".tripx-type-card").forEach(function (item) {
-                item.classList.remove("selected");
-            });
-            card.classList.add("selected");
-            selectedType = card.dataset.type;
-            updateFare();
-        });
-    });
-
-    from.addEventListener("change", updateFare);
-    to.addEventListener("change", updateFare);
-
-    searchBtn.addEventListener("click", function () {
-        const source = from.value;
-        const destination = to.value;
-
-        results.style.display = "block";
-        resultsList.innerHTML = "";
-
-        if (source === destination) {
-            resultsHeading.textContent = "Invalid route";
-            resultsSummary.textContent = "Source and destination must be different.";
-            resultsList.textContent = "Please select two different cities.";
-            return;
-        }
-
-        if (date && date.value) {
-            const selectedDate = new Date(date.value + "T00:00:00");
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            if (selectedDate < today) {
-                resultsHeading.textContent = "Invalid journey date";
-                resultsSummary.textContent = "Please select today or a future date.";
-                resultsList.textContent = "Choose a valid journey date.";
+            if (!from || !to || !searchBtn || !window.TripXData) {
+                console.error("TripX search could not initialize.");
                 return;
             }
-        }
 
-        const route = getRoute();
+            const extras = {
+                "nonac-seater": 0,
+                "ac-seater": 150,
+                "nonac-sleeper": 200,
+                "ac-sleeper": 300
+            };
 
-        if (!route) {
-            resultsHeading.textContent = "Route not available";
-            resultsSummary.textContent = source + " to " + destination;
-            resultsList.textContent = "This route is not currently listed in TripX demo routes.";
-            return;
-        }
+            const typeNames = {
+                "nonac-seater": "Non-AC Seater",
+                "ac-seater": "AC Seater",
+                "nonac-sleeper": "Non-AC Sleeper",
+                "ac-sleeper": "AC Sleeper"
+            };
 
-        const matchingBuses = window.TripXData.getActiveBuses().filter(function (bus) {
-            const sameDirection =
-                bus.source === source && bus.destination === destination;
-            const reverseDirection =
-                bus.source === destination && bus.destination === source;
-            return sameDirection || reverseDirection;
-        });
+            let selectedType = "nonac-seater";
 
-        resultsHeading.textContent = "Available Buses";
-        resultsSummary.textContent =
-            source + " → " + destination +
-            (date && date.value ? " | Journey date: " + date.value : "") +
-            " | " + matchingBuses.length + " active bus(es) found";
-
-        if (matchingBuses.length === 0) {
-            resultsList.textContent = "No active buses found for this route.";
-            return;
-        }
-
-        matchingBuses.forEach(function (bus) {
-            const card = document.createElement("article");
-            card.className = "tripx-result-card";
-
-            const title = document.createElement("h4");
-            title.textContent = bus.busNumber;
-
-            const operator = document.createElement("p");
-            operator.textContent = "Operator: " + (bus.operator || "TripX");
-
-            const routeText = document.createElement("p");
-            routeText.textContent = source + " → " + destination;
-
-            const capacity = document.createElement("p");
-            capacity.textContent = "Bus capacity: " + bus.capacity + " passengers";
-
-            const type = document.createElement("p");
-            type.textContent = "Selected type: " + typeNames[selectedType];
-
-            const fare = document.createElement("strong");
-            fare.textContent = "Estimated fare: ₹" + (route.fare + extras[selectedType]);
-
-            const rating = document.createElement("small");
-            rating.textContent = "★ 4.5/5 – illustrative demo rating";
-
-            const book = document.createElement("button");
-            book.type = "button";
-            book.textContent = "Continue to Booking";
-            book.addEventListener("click", function () {
-                const params = new URLSearchParams({
-                    bus: bus.id,
-                    from: source,
-                    to: destination,
-                    date: date ? date.value : "",
-                    type: selectedType,
-                    fare: String(route.fare + extras[selectedType])
+            function getRoute() {
+                return window.TripXData.routes.find(function (route) {
+                    return (route.source === from.value && route.destination === to.value) ||
+                        (route.source === to.value && route.destination === from.value);
                 });
-                window.location.href = "booking.html?" + params.toString();
+            }
+
+            function updateFare() {
+                const route = getRoute();
+                if (!route) {
+                    fareValue.textContent = "Not available";
+                    fareBreakdown.textContent = "This route is not listed in TripX demo routes.";
+                    return;
+                }
+
+                const extra = extras[selectedType];
+                fareValue.textContent = "₹" + (route.fare + extra);
+                fareBreakdown.textContent =
+                    "Base fare ₹" + route.fare + " + extra ₹" + extra;
+            }
+
+            document.querySelectorAll(".tripx-type-card").forEach(function (card) {
+                card.addEventListener("click", function () {
+                    document.querySelectorAll(".tripx-type-card").forEach(function (item) {
+                        item.classList.remove("selected");
+                    });
+                    card.classList.add("selected");
+                    selectedType = card.dataset.type;
+                    updateFare();
+                });
             });
 
-            card.append(title, operator, routeText, capacity, type, fare, rating, book);
-            resultsList.appendChild(card);
-        });
-    });
+            from.addEventListener("change", updateFare);
+            to.addEventListener("change", updateFare);
 
-    updateFare();
-})();
-</script>
+            searchBtn.addEventListener("click", function () {
+                const source = from.value;
+                const destination = to.value;
+
+                results.style.display = "block";
+                resultsList.innerHTML = "";
+
+                if (source === destination) {
+                    resultsHeading.textContent = "Invalid route";
+                    resultsSummary.textContent = "Source and destination must be different.";
+                    resultsList.textContent = "Please select two different cities.";
+                    return;
+                }
+
+                if (date && date.value) {
+                    const selectedDate = new Date(date.value + "T00:00:00");
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    if (selectedDate < today) {
+                        resultsHeading.textContent = "Invalid journey date";
+                        resultsSummary.textContent = "Please select today or a future date.";
+                        resultsList.textContent = "Choose a valid journey date.";
+                        return;
+                    }
+                }
+
+                const route = getRoute();
+
+                if (!route) {
+                    resultsHeading.textContent = "Route not available";
+                    resultsSummary.textContent = source + " to " + destination;
+                    resultsList.textContent = "This route is not currently listed in TripX demo routes.";
+                    return;
+                }
+
+                const matchingBuses = window.TripXData.getActiveBuses().filter(function (bus) {
+                    const sameDirection =
+                        bus.source === source && bus.destination === destination;
+                    const reverseDirection =
+                        bus.source === destination && bus.destination === source;
+                    return sameDirection || reverseDirection;
+                });
+
+                resultsHeading.textContent = "Available Buses";
+                resultsSummary.textContent =
+                    source + " → " + destination +
+                    (date && date.value ? " | Journey date: " + date.value : "") +
+                    " | " + matchingBuses.length + " active bus(es) found";
+
+                if (matchingBuses.length === 0) {
+                    resultsList.textContent = "No active buses found for this route.";
+                    return;
+                }
+
+                matchingBuses.forEach(function (bus) {
+                    const card = document.createElement("article");
+                    card.className = "tripx-result-card";
+
+                    const title = document.createElement("h4");
+                    title.textContent = bus.busNumber;
+
+                    const operator = document.createElement("p");
+                    operator.textContent = "Operator: " + (bus.operator || "TripX");
+
+                    const routeText = document.createElement("p");
+                    routeText.textContent = source + " → " + destination;
+
+                    const capacity = document.createElement("p");
+                    capacity.textContent = "Bus capacity: " + bus.capacity + " passengers";
+
+                    const type = document.createElement("p");
+                    type.textContent = "Selected type: " + typeNames[selectedType];
+
+                    const fare = document.createElement("strong");
+                    fare.textContent = "Estimated fare: ₹" + (route.fare + extras[selectedType]);
+
+                    const rating = document.createElement("small");
+                    rating.textContent = "★ 4.5/5 – illustrative demo rating";
+
+                    const book = document.createElement("button");
+                    book.type = "button";
+                    book.textContent = "Continue to Booking";
+                    book.addEventListener("click", function () {
+                        const params = new URLSearchParams({
+                            bus: bus.id,
+                            from: source,
+                            to: destination,
+                            date: date ? date.value : "",
+                            type: selectedType,
+                            fare: String(route.fare + extras[selectedType])
+                        });
+                        window.location.href = "booking.html?" + params.toString();
+                    });
+
+                    card.append(title, operator, routeText, capacity, type, fare, rating, book);
+                    resultsList.appendChild(card);
+                });
+            });
+
+            updateFare();
+        })();
+    </script>
     <script src="script.js"></script>
     <script src="ds.js"></script>
     <script src="coa4.js"></script>
@@ -976,17 +991,5 @@
     <script src="auth.js"></script>
     <script src="chatbot.js"></script>
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-

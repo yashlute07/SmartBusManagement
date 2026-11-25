@@ -1,16 +1,50 @@
-﻿(function () {
+﻿
+(function () {
     "use strict";
 
     const STORAGE_KEY = "tripXBuses";
 
     const routes = [
+        // Pune Routes
         { code: "TX-PBH-001", source: "Pune", destination: "Bhusawal", fare: 450, operator: "TripX Demo Operator", time: "07:00" },
         { code: "TX-PJL-002", source: "Pune", destination: "Jalgaon", fare: 500, operator: "Khandesh Express", time: "08:00" },
         { code: "TX-PDH-003", source: "Pune", destination: "Dhule", fare: 480, operator: "TripX Demo Operator", time: "09:00" },
         { code: "TX-PMU-004", source: "Pune", destination: "Mumbai", fare: 350, operator: "TripX Demo Operator", time: "10:00" },
         { code: "TX-PCS-005", source: "Pune", destination: "Chhatrapati Sambhajinagar", fare: 420, operator: "TripX Demo Operator", time: "11:00" },
         { code: "TX-PSL-006", source: "Pune", destination: "Solapur", fare: 380, operator: "TripX Demo Operator", time: "12:00" },
-        { code: "TX-PNS-007", source: "Pune", destination: "Nashik", fare: 400, operator: "TripX Demo Operator", time: "13:00" }
+        { code: "TX-PNS-007", source: "Pune", destination: "Nashik", fare: 400, operator: "TripX Demo Operator", time: "13:00" },
+        { code: "TX-PW-008", source: "Pune", destination: "Wai", fare: 250, operator: "TripX Demo Operator", time: "08:00" },
+        { code: "TX-PM-009", source: "Pune", destination: "Mahabaleshwar", fare: 350, operator: "TripX Demo Operator", time: "09:00" },
+        { code: "TX-PS-010", source: "Pune", destination: "Satara", fare: 220, operator: "TripX Demo Operator", time: "10:00" },
+        { code: "TX-PK-011", source: "Pune", destination: "Karad", fare: 280, operator: "TripX Demo Operator", time: "11:00" },
+        { code: "TX-PKOL-012", source: "Pune", destination: "Kolhapur", fare: 400, operator: "TripX Demo Operator", time: "12:00" },
+        { code: "TX-PSA-013", source: "Pune", destination: "Sangli", fare: 380, operator: "TripX Demo Operator", time: "13:00" },
+        { code: "TX-PL-014", source: "Pune", destination: "Lonavala", fare: 150, operator: "TripX Demo Operator", time: "14:00" },
+        { code: "TX-PT-015", source: "Pune", destination: "Thane", fare: 330, operator: "TripX Demo Operator", time: "15:00" },
+        { code: "TX-PNM-016", source: "Pune", destination: "Navi Mumbai", fare: 320, operator: "TripX Demo Operator", time: "16:00" },
+
+        // Wai Routes
+        { code: "TX-WM-017", source: "Wai", destination: "Mahabaleshwar", fare: 120, operator: "TripX Demo Operator", time: "07:30" },
+        { code: "TX-WS-018", source: "Wai", destination: "Satara", fare: 100, operator: "TripX Demo Operator", time: "08:30" },
+        { code: "TX-WK-019", source: "Wai", destination: "Karad", fare: 180, operator: "TripX Demo Operator", time: "09:30" },
+        { code: "TX-WMUM-020", source: "Wai", destination: "Mumbai", fare: 450, operator: "TripX Demo Operator", time: "10:30" },
+
+        // Satara Routes
+        { code: "TX-SM-021", source: "Satara", destination: "Mahabaleshwar", fare: 150, operator: "TripX Demo Operator", time: "08:00" },
+        { code: "TX-SK-022", source: "Satara", destination: "Karad", fare: 100, operator: "TripX Demo Operator", time: "09:00" },
+        { code: "TX-SKOL-023", source: "Satara", destination: "Kolhapur", fare: 250, operator: "TripX Demo Operator", time: "10:00" },
+        { code: "TX-SS-024", source: "Satara", destination: "Sangli", fare: 220, operator: "TripX Demo Operator", time: "11:00" },
+
+        // Other Routes
+        { code: "TX-MUM-025", source: "Mumbai", destination: "Nashik", fare: 300, operator: "TripX Demo Operator", time: "07:00" },
+        { code: "TX-MUK-026", source: "Mumbai", destination: "Kolhapur", fare: 550, operator: "TripX Demo Operator", time: "08:00" },
+        { code: "TX-NK-027", source: "Nashik", destination: "Dhule", fare: 180, operator: "TripX Demo Operator", time: "09:00" },
+        { code: "TX-JD-028", source: "Jalgaon", destination: "Dhule", fare: 150, operator: "TripX Demo Operator", time: "10:00" },
+        { code: "TX-KS-029", source: "Kolhapur", destination: "Sangli", fare: 120, operator: "TripX Demo Operator", time: "11:00" },
+        { code: "TX-TNM-030", source: "Thane", destination: "Navi Mumbai", fare: 100, operator: "TripX Demo Operator", time: "12:00" },
+        { code: "TX-LM-031", source: "Lonavala", destination: "Mumbai", fare: 180, operator: "TripX Demo Operator", time: "13:00" },
+        { code: "TX-SOL-032", source: "Solapur", destination: "Kolhapur", fare: 350, operator: "TripX Demo Operator", time: "14:00" },
+        { code: "TX-CSN-033", source: "Chhatrapati Sambhajinagar", destination: "Nashik", fare: 250, operator: "TripX Demo Operator", time: "15:00" }
     ];
 
     const defaultBuses = [
@@ -73,7 +107,7 @@
         const route = matchRoute(details.route);
 
         if (!busNumber || !driver || !route || !Number.isInteger(capacity) || capacity < 1 || capacity > 100) {
-            throw new Error("Enter a valid bus number, driver, one of the 7 TripX routes, and capacity from 1 to 100.");
+            throw new Error("Enter a valid bus number, driver, one of the 33 TripX routes, and capacity from 1 to 100.");
         }
 
         const buses = readBuses();
