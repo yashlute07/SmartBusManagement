@@ -1,0 +1,332 @@
+1. Cohen–Sutherland Line Clipping
+
+
+(function () {
+    const canvas = document.getElementById("busClippingCanvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    const LEFT = 1;
+    const RIGHT = 2;
+    const BOTTOM = 4;
+    const TOP = 8;
+
+    const xmin = 150;
+    const ymin = 100;
+    const xmax = 650;
+    const ymax = 400;
+
+    function computeCode(x, y) {
+        let code = 0;
+
+        if (x < xmin) code |= LEFT;
+        else if (x > xmax) code |= RIGHT;
+
+        if (y < ymin) code |= TOP;
+        else if (y > ymax) code |= BOTTOM;
+
+        return code;
+    }
+
+    function cohenSutherland(x1, y1, x2, y2) {
+        let code1 = computeCode(x1, y1);
+        let code2 = computeCode(x2, y2);
+
+        while (true) {
+            if ((code1 | code2) === 0) {
+                return [x1, y1, x2, y2];
+            }
+
+            if ((code1 & code2) !== 0) {
+                return null;
+            }
+
+            let codeOut = code1 !== 0 ? code1 : code2;
+            let x, y;
+
+            if (codeOut & TOP) {
+                x = x1 + (x2 - x1) * (ymin - y1) / (y2 - y1);
+                y = ymin;
+            } else if (codeOut & BOTTOM) {
+                x = x1 + (x2 - x1) * (ymax - y1) / (y2 - y1);
+                y = ymax;
+            } else if (codeOut & RIGHT) {
+                y = y1 + (y2 - y1) * (xmax - x1) / (x2 - x1);
+                x = xmax;
+            } else {
+                y = y1 + (y2 - y1) * (xmin - x1) / (x2 - x1);
+                x = xmin;
+            }
+
+            if (codeOut === code1) {
+                x1 = x;
+                y1 = y;
+                code1 = computeCode(x1, y1);
+            } else {
+                x2 = x;
+                y2 = y;
+                code2 = computeCode(x2, y2);
+            }
+        }
+    }
+
+    function drawLine(x1, y1, x2, y2, color, dashed = false) {
+        ctx.beginPath();
+        ctx.setLineDash(dashed ? [7, 5] : []);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Clipping window
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(
+            xmin,
+            ymin,
+            xmax - xmin,
+            ymax - ymin
+        );
+
+        // Original lines
+        const lines = [
+            [50, 50, 750, 450],
+            [50, 250, 750, 250],
+            [300, 50, 300, 450],
+            [200, 200, 500, 300],
+            [50, 450, 100, 480],
+            [700, 50, 750, 450]
+        ];
+
+        lines.forEach(line => {
+            const [x1, y1, x2, y2] = line;
+
+            // Original line in red
+            drawLine(x1, y1, x2, y2, "red", true);
+
+            // Clipped line in green
+            const result = cohenSutherland(
+                x1, y1, x2, y2
+            );
+
+            if (result) {
+                drawLine(...result, "green");
+            }
+        });
+
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "blue";
+        ctx.fillText("Clipping Window", 160, 90);
+
+        ctx.fillStyle = "red";
+        ctx.fillText("Original Lines", 20, 25);
+
+        ctx.fillStyle = "green";
+        ctx.fillText("Clipped Lines", 20, 45);
+    }
+
+    draw();
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2. Sutherland–Hodgman Polygon Clipping
+
+(function () {
+    const canvas = document.getElementById(
+        "busPolygonClippingCanvas"
+    );
+
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    const xmin = 150;
+    const ymin = 100;
+    const xmax = 650;
+    const ymax = 400;
+
+    // Original polygon
+    const polygon = [
+        [80, 160],
+        [380, 40],
+        [720, 180],
+        [600, 460],
+        [250, 440]
+    ];
+
+    function inside(point, edge) {
+        const [x, y] = point;
+
+        switch (edge) {
+            case "LEFT":
+                return x >= xmin;
+
+            case "RIGHT":
+                return x <= xmax;
+
+            case "TOP":
+                return y >= ymin;
+
+            case "BOTTOM":
+                return y <= ymax;
+        }
+    }
+
+    function intersection(p1, p2, edge) {
+        const [x1, y1] = p1;
+        const [x2, y2] = p2;
+
+        let x, y;
+
+        if (edge === "LEFT" || edge === "RIGHT") {
+            x = edge === "LEFT" ? xmin : xmax;
+
+            if (x2 === x1) {
+                y = y1;
+            } else {
+                y = y1 +
+                    (y2 - y1) * (x - x1) / (x2 - x1);
+            }
+        } else {
+            y = edge === "TOP" ? ymin : ymax;
+
+            if (y2 === y1) {
+                x = x1;
+            } else {
+                x = x1 +
+                    (x2 - x1) * (y - y1) / (y2 - y1);
+            }
+        }
+
+        return [x, y];
+    }
+
+    function sutherlandHodgman(inputPolygon) {
+        let outputPolygon = inputPolygon;
+
+        const edges = [
+            "LEFT",
+            "RIGHT",
+            "TOP",
+            "BOTTOM"
+        ];
+
+        for (const edge of edges) {
+            const input = outputPolygon;
+            outputPolygon = [];
+
+            if (input.length === 0) break;
+
+            let S = input[input.length - 1];
+
+            for (const E of input) {
+                const S_inside = inside(S, edge);
+                const E_inside = inside(E, edge);
+
+                if (S_inside && E_inside) {
+                    outputPolygon.push(E);
+                } else if (S_inside && !E_inside) {
+                    outputPolygon.push(
+                        intersection(S, E, edge)
+                    );
+                } else if (!S_inside && E_inside) {
+                    outputPolygon.push(
+                        intersection(S, E, edge)
+                    );
+
+                    outputPolygon.push(E);
+                }
+
+                S = E;
+            }
+        }
+
+        return outputPolygon;
+    }
+
+    function drawPolygon(points, color, fill = false, dashed = false) {
+        if (points.length === 0) return;
+
+        ctx.beginPath();
+        ctx.setLineDash(dashed ? [7, 5] : []);
+
+        ctx.moveTo(points[0][0], points[0][1]);
+
+        for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i][0], points[i][1]);
+        }
+
+        ctx.closePath();
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        if (fill) {
+            ctx.fillStyle = "rgba(0, 180, 80, 0.25)";
+            ctx.fill();
+        }
+
+        ctx.setLineDash([]);
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Clipping window
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 3;
+
+        ctx.strokeRect(
+            xmin,
+            ymin,
+            xmax - xmin,
+            ymax - ymin
+        );
+
+        // Original polygon
+        drawPolygon(polygon, "red", false, true);
+
+        // Apply Sutherland-Hodgman algorithm
+        const clippedPolygon =
+            sutherlandHodgman(polygon);
+
+        // Clipped polygon
+        drawPolygon(clippedPolygon, "green", true);
+
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "blue";
+        ctx.fillText("Clipping Window", 160, 90);
+
+        ctx.fillStyle = "red";
+        ctx.fillText("Original Polygon", 20, 25);
+
+        ctx.fillStyle = "green";
+        ctx.fillText("Clipped Polygon", 20, 45);
+    }
+
+    draw();
+})();
+
+
+JavaScript files connected in buses.html

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmartBus - Admin Login</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#101827;font-family:Arial;padding:20px}
+.panel{background:white;width:min(440px,100%);padding:30px;border-radius:16px}
+h1{color:#173b70;margin-top:0}
+p{color:#657187}
+input{width:100%;padding:12px;margin:8px 0 14px;border:1px solid #ccd3df;border-radius:8px;font-size:15px}
+button{width:100%;padding:12px;border:0;border-radius:8px;background:#1769aa;color:white;font-weight:bold;cursor:pointer}
+a{display:block;text-align:center;margin-top:18px;color:#1769aa}
+#message{color:#b42318;min-height:22px}
+</style>
+</head>
+<body>
+<div class="panel">
+<h1>SmartBus Admin</h1>
+<p>Administrator access only.</p>
+<form id="adminForm">
+<input id="email" type="email" placeholder="Admin email" required>
+<input id="password" type="password" placeholder="Admin password" required>
+<button type="submit">Admin Login</button>
+</form>
+<div id="message" role="status"></div>
+<a href="login.html">Back to login selection</a>
+</div>
+<script>
+"use strict";
+
+const ADMIN_EMAIL = "admin@smartbus.local";
+const ADMIN_PASSWORD = "Admin@123";
+const SESSION_KEY = "smartBusSession";
+
+document.getElementById("adminForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+
+    if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+        document.getElementById("message").textContent = "Invalid Admin email or password.";
+        return;
+    }
+
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+        name: "SmartBus Admin",
+        email: ADMIN_EMAIL,
+        phone: "",
+        role: "admin",
+        loginAt: new Date().toISOString()
+    }));
+
+    location.replace("index.html");
+});
+</script>
+</body>
+</html>
