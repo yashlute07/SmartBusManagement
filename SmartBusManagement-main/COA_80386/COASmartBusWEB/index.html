@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Bus | Fare Calculator</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #eef3fa;
+    color: #17243b;
+    min-height: 100vh;
+}
+
+header {
+    background: #101e38;
+    color: white;
+    padding: 22px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #32c5ed;
+}
+
+header p {
+    color: #b8c9df;
+    font-size: 13px;
+}
+
+.hero {
+    background: linear-gradient(120deg, #10203d, #164e79);
+    color: white;
+    padding: 65px 8%;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.hero h1 span {
+    color: #42d5f5;
+}
+
+.hero p {
+    color: #c9d9ed;
+    font-size: 16px;
+}
+
+.hero .bus {
+    font-size: 90px;
+    position: absolute;
+    right: 12%;
+    top: 25px;
+}
+
+.container {
+    max-width: 1050px;
+    margin: -30px auto 50px;
+    padding: 0 20px;
+    position: relative;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 15px 45px rgba(20, 43, 75, 0.12);
+}
+
+.card h2 {
+    font-size: 24px;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    color: #7c8ba1;
+    margin-bottom: 27px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+.field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 9px;
+    font-size: 14px;
+}
+
+.field input, .field select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #dce4ee;
+    border-radius: 9px;
+    outline: none;
+    font-size: 15px;
+    background: #f9fbfe;
+}
+
+.field input:focus, .field select:focus {
+    border-color: #159ed0;
+    box-shadow: 0 0 0 3px rgba(21,158,208,.1);
+}
+
+.rate {
+    background: #e8f8fd;
+    color: #087da6;
+    padding: 15px;
+    border-radius: 9px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 24px;
+}
+
+.calculate {
+    width: 100%;
+    padding: 16px;
+    margin-top: 24px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(100deg, #087eaf, #18bde1);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.calculate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px #18bde155;
+}
+
+.result {
+    display: none;
+    margin-top: 28px;
+    padding: 25px;
+    background: #f0faff;
+    border: 1px solid #c9edf9;
+    border-radius: 14px;
+}
+
+.result h3 {
+    margin-bottom: 18px;
+    color: #087da6;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #dbeaf2;
+    gap: 12px;
+}
+
+.total {
+    font-size: 25px;
+    font-weight: 800;
+    color: #087da6;
+    padding-top: 20px;
+}
+
+.error {
+    color: #d93636;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    background: #101e38;
+    color: #aebed3;
+    padding: 25px;
+    font-size: 13px;
+}
+
+@media(max-width:650px) {
+    header {
+        padding: 20px;
+    }
+
+    .hero {
+        padding: 45px 22px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .hero .bus {
+        opacity: .2;
+        right: 5%;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <div class="logo">SMART<span>BUS</span> 🚌</div>
+        <p>Intelligent Bus Fare Management</p>
+    </div>
+    <p>COA CO3 PROJECT</p>
+</header>
+
+<section class="hero">
+    <h1>Travel Smart.<br><span>Pay Smart.</span></h1>
+    <p>Calculate your bus journey fare instantly.</p>
+    <div class="bus">🚌</div>
+</section>
+
+<div class="container">
+
+<div class="card">
+
+    <h2>Journey Fare Calculator</h2>
+    <p class="subtitle">
+        Enter your journey details to calculate your total fare.
+    </p>
+
+    <div class="form-grid">
+
+        <div class="field">
+            <label>Passenger Name</label>
+            <input type="text" id="name"
+                   placeholder="Enter passenger name">
+        </div>
+
+        <div class="field">
+            <label>Destination</label>
+            <select id="destination">
+                <option value="">Select destination</option>
+                <option value="Pune">Pune</option>
+                <option value="Nashik">Nashik</option>
+                <option value="Mumbai">Mumbai</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Journey Distance (KM)</label>
+            <input type="number" id="distance"
+                   placeholder="Enter distance"
+                   min="1" step="1">
+        </div>
+
+        <div class="field">
+            <label>Number of Passengers</label>
+            <input type="number" id="passengers"
+                   placeholder="Enter passenger count"
+                   min="1" step="1" value="1">
+        </div>
+
+    </div>
+
+    <div class="rate">
+        💰 Fixed Fare Rate: ₹3 per KM
+    </div>
+
+    <button class="calculate" onclick="calculateFare()">
+        Calculate My Fare →
+    </button>
+
+    <p class="error" id="error"></p>
+
+    <div class="result" id="result">
+
+        <h3>✓ Journey Fare Summary</h3>
+
+        <div class="result-row">
+            <span>Passenger Name</span>
+            <strong id="rName"></strong>
+        </div>
+
+        <div class="result-row">
+            <span>Destination</span>
+            <strong id="rDestination"></strong>
+        </div>
+
+        <div class="result-row">
+            <span>Distance</span>
+            <strong id="rDistance"></strong>
+        </div>
+
+        <div class="result-row">
+            <span>Fare per KM</span>
+            <strong>₹3</strong>
+        </div>
+
+        <div class="result-row">
+            <span>Fare per Passenger</span>
+            <strong id="rFare"></strong>
+        </div>
+
+        <div class="result-row">
+            <span>Number of Passengers</span>
+            <strong id="rPassengers"></strong>
+        </div>
+
+        <div class="total">
+            Total Fare: <span id="rTotal"></span>
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+<footer>
+    © 2026 Smart Bus Management System |
+    COA CO3 | Designed for Educational Purpose
+</footer>
+
+<script>
+function calculateFare() {
+
+    const name = document.getElementById("name").value.trim();
+    const destination = document.getElementById("destination").value;
+    const distance = Number(document.getElementById("distance").value);
+    const passengers = Number(document.getElementById("passengers").value);
+
+    const error = document.getElementById("error");
+    const result = document.getElementById("result");
+
+    error.textContent = "";
+    result.style.display = "none";
+
+    if (!name || !destination ||
+        !Number.isInteger(distance) || distance <= 0 ||
+        !Number.isInteger(passengers) || passengers <= 0) {
+
+        error.textContent =
+            "Please enter valid details in all fields.";
+        return;
+    }
+
+    // Dynamic fare calculation
+    const rate = 3;
+    const fare = distance * rate;
+    const total = fare * passengers;
+
+    document.getElementById("rName").textContent = name;
+    document.getElementById("rDestination").textContent = destination;
+    document.getElementById("rDistance").textContent = distance + " KM";
+    document.getElementById("rFare").textContent =
+        "₹" + fare.toLocaleString("en-IN");
+    document.getElementById("rPassengers").textContent = passengers;
+    document.getElementById("rTotal").textContent =
+        "₹" + total.toLocaleString("en-IN");
+
+    result.style.display = "block";
+}
+</script>
+<script src="script.js"></script>
+</body>
+</html>

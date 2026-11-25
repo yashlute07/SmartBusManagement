@@ -1,0 +1,541 @@
+
+#include <GL/freeglut.h>
+#include <iostream>
+
+using namespace std;
+
+const int ROWS = 10;
+const int COLS = 2;
+const int TOTAL = ROWS * COLS;
+
+bool booked[TOTAL] = { false };
+int selectedSeat = 0;
+
+GLuint floorTexture;
+
+// Create 3D cube
+void drawBox(
+    float x, float y, float z,
+    float sx, float sy, float sz,
+    float r, float g, float b
+) {
+
+    glPushMatrix();
+
+    glTranslatef(x, y, z);
+    glScalef(sx, sy, sz);
+
+    glColor3f(r, g, b);
+
+    glutSolidCube(1.0);
+
+    glPopMatrix();
+}
+
+// Create checkerboard texture
+void createTexture() {
+
+    const int SIZE = 64;
+
+    GLubyte image[SIZE][SIZE][3];
+
+    for (int i = 0; i < SIZE; i++) {
+
+        for (int j = 0; j < SIZE; j++) {
+
+            int check = ((i / 8) + (j / 8)) % 2;
+
+            if (check == 0) {
+
+                image[i][j][0] = 155;
+                image[i][j][1] = 165;
+                image[i][j][2] = 170;
+            }
+
+            else {
+
+                image[i][j][0] = 70;
+                image[i][j][1] = 85;
+                image[i][j][2] = 95;
+            }
+        }
+    }
+
+    glGenTextures(1, &floorTexture);
+
+    glBindTexture(GL_TEXTURE_2D, floorTexture);
+
+    glTexParameteri(
+        GL_TEXTURE_2D,
+        GL_TEXTURE_MIN_FILTER,
+        GL_LINEAR
+    );
+
+    glTexParameteri(
+        GL_TEXTURE_2D,
+        GL_TEXTURE_MAG_FILTER,
+        GL_LINEAR
+    );
+
+    glTexParameteri(
+        GL_TEXTURE_2D,
+        GL_TEXTURE_WRAP_S,
+        GL_REPEAT
+    );
+
+    glTexParameteri(
+        GL_TEXTURE_2D,
+        GL_TEXTURE_WRAP_T,
+        GL_REPEAT
+    );
+
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        GL_RGB,
+        SIZE,
+        SIZE,
+        0,
+        GL_RGB,
+        GL_UNSIGNED_BYTE,
+        image
+    );
+}
+
+// Draw textured bus floor
+void drawFloor() {
+
+    glEnable(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, floorTexture);
+
+    glColor3f(1.0, 1.0, 1.0);
+
+    glBegin(GL_QUADS);
+
+    glNormal3f(0, 1, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(-3, 0, -9);
+
+    glTexCoord2f(2, 0);
+    glVertex3f(3, 0, -9);
+
+    glTexCoord2f(2, 5);
+    glVertex3f(3, 0, 9);
+
+    glTexCoord2f(0, 5);
+    glVertex3f(-3, 0, 9);
+
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+}
+
+// Draw bus body and walls
+void drawBus() {
+
+    // Left side wall
+    drawBox(
+        -3.1, 0.7, 0,
+        0.25, 1.4, 18,
+        0.15, 0.35, 0.55
+    );
+
+    // Right side wall
+    drawBox(
+        3.1, 0.7, 0,
+        0.25, 1.4, 18,
+        0.15, 0.35, 0.55
+    );
+
+    // Front wall
+    drawBox(
+        0, 0.7, -8.8,
+        6.2, 1.4, 0.3,
+        0.2, 0.4, 0.65
+    );
+
+    // Rear wall
+    drawBox(
+        0, 0.7, 8.8,
+        6.2, 1.4, 0.3,
+        0.2, 0.4, 0.65
+    );
+
+    // Central aisle
+    drawBox(
+        0, 0.05, 0,
+        0.65, 0.08, 17,
+        0.85, 0.78, 0.62
+    );
+
+    // Driver area
+    drawBox(
+        0, 0.4, -8.1,
+        1.5, 0.7, 0.9,
+        0.25, 0.28, 0.35
+    );
+}
+
+// Set seat colour
+void setSeatColor(int index) {
+
+    if (booked[index]) {
+
+        glColor3f(0.86, 0.15, 0.15);
+    }
+
+    else if (index == selectedSeat) {
+
+        glColor3f(0.1, 0.35, 0.95);
+    }
+
+    else {
+
+        glColor3f(0.1, 0.65, 0.25);
+    }
+}
+
+// Draw one seat
+void drawSeat(int index, float x, float z) {
+
+    glPushMatrix();
+
+    // Seat base
+    glPushMatrix();
+
+    glTranslatef(x, 0.2, z);
+
+    glScalef(1.0, 0.35, 1.0);
+
+    setSeatColor(index);
+
+    glutSolidCube(1.0);
+
+    glPopMatrix();
+
+    // Seat backrest
+    glPushMatrix();
+
+    glTranslatef(x, 0.65, z + 0.35);
+
+    glScalef(1.0, 0.8, 0.2);
+
+    glColor3f(0.4, 0.45, 0.55);
+
+    glutSolidCube(1.0);
+
+    glPopMatrix();
+
+    // Left armrest
+    drawBox(
+        x - 0.48, 0.42, z,
+        0.08, 0.3, 0.8,
+        0.28, 0.32, 0.4
+    );
+
+    // Right armrest
+    drawBox(
+        x + 0.48, 0.42, z,
+        0.08, 0.3, 0.8,
+        0.28, 0.32, 0.4
+    );
+
+    glPopMatrix();
+}
+
+// Create 20 seats
+void drawSeats() {
+
+    int index = 0;
+
+    for (int row = 0; row < ROWS; row++) {
+
+        for (int col = 0; col < COLS; col++) {
+
+            float x = (col == 0) ? -1.25 : 1.25;
+
+            float z = -7.5 + row * 1.65;
+
+            drawSeat(index, x, z);
+
+            index++;
+        }
+    }
+}
+
+// Display seat information
+void displaySeatStatus() {
+
+    int count = 0;
+
+    for (int i = 0; i < TOTAL; i++) {
+
+        if (booked[i])
+            count++;
+    }
+
+    cout << "\rSelected Seat: " << selectedSeat + 1
+         << " | Booked: " << count
+         << " | Vacant: " << TOTAL - count
+         << "          " << flush;
+}
+
+// Display function
+void display() {
+
+    glClear(
+        GL_COLOR_BUFFER_BIT |
+        GL_DEPTH_BUFFER_BIT
+    );
+
+    glMatrixMode(GL_MODELVIEW);
+
+    glLoadIdentity();
+
+    gluLookAt(
+        10, 14, 18,
+        0, 0, 0,
+        0, 1, 0
+    );
+
+    // Draw floor texture
+    drawFloor();
+
+    // Draw bus structure
+    drawBus();
+
+    // Draw all seats
+    drawSeats();
+
+    glutSwapBuffers();
+}
+
+// Book selected seat
+void bookSeat() {
+
+    booked[selectedSeat] = true;
+
+    displaySeatStatus();
+
+    glutPostRedisplay();
+}
+
+// Vacate selected seat
+void vacateSeat() {
+
+    booked[selectedSeat] = false;
+
+    displaySeatStatus();
+
+    glutPostRedisplay();
+}
+
+// Reset all seats
+void resetSeats() {
+
+    for (int i = 0; i < TOTAL; i++) {
+
+        booked[i] = false;
+    }
+
+    selectedSeat = 0;
+
+    displaySeatStatus();
+
+    glutPostRedisplay();
+}
+
+// Keyboard controls
+void keyboard(unsigned char key, int x, int y) {
+
+    switch (key) {
+
+        case 'b':
+        case 'B':
+            bookSeat();
+            break;
+
+        case 'v':
+        case 'V':
+            vacateSeat();
+            break;
+
+        case 'r':
+        case 'R':
+            resetSeats();
+            break;
+
+        case 27:
+            exit(0);
+            break;
+    }
+}
+
+// Arrow key controls
+void specialKeys(int key, int x, int y) {
+
+    if (key == GLUT_KEY_RIGHT ||
+        key == GLUT_KEY_DOWN) {
+
+        selectedSeat = (selectedSeat + 1) % TOTAL;
+    }
+
+    else if (key == GLUT_KEY_LEFT ||
+             key == GLUT_KEY_UP) {
+
+        selectedSeat = (selectedSeat + TOTAL - 1) % TOTAL;
+    }
+
+    displaySeatStatus();
+
+    glutPostRedisplay();
+}
+
+// Initialize lighting and texture
+void init() {
+
+    glClearColor(
+        0.06, 0.09, 0.15, 1.0
+    );
+
+    glEnable(GL_DEPTH_TEST);
+
+    // Enable lighting
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    // Ambient light
+    GLfloat ambient[] = {
+        0.4, 0.4, 0.4, 1.0
+    };
+
+    // Diffuse light
+    GLfloat diffuse[] = {
+        0.9, 0.9, 0.9, 1.0
+    };
+
+    // Specular light
+    GLfloat specular[] = {
+        1.0, 1.0, 1.0, 1.0
+    };
+
+    // Light position
+    GLfloat position[] = {
+        -5.0, 12.0, -5.0, 1.0
+    };
+
+    glLightfv(
+        GL_LIGHT0,
+        GL_AMBIENT,
+        ambient
+    );
+
+    glLightfv(
+        GL_LIGHT0,
+        GL_DIFFUSE,
+        diffuse
+    );
+
+    glLightfv(
+        GL_LIGHT0,
+        GL_SPECULAR,
+        specular
+    );
+
+    glLightfv(
+        GL_LIGHT0,
+        GL_POSITION,
+        position
+    );
+
+    // Enable material colour
+    glEnable(GL_COLOR_MATERIAL);
+
+    glColorMaterial(
+        GL_FRONT_AND_BACK,
+        GL_AMBIENT_AND_DIFFUSE
+    );
+
+    // Material properties
+    GLfloat shine[] = {50.0};
+
+    glMaterialfv(
+        GL_FRONT,
+        GL_SHININESS,
+        shine
+    );
+
+    // Smooth shading
+    glShadeModel(GL_SMOOTH);
+
+    // Create floor texture
+    createTexture();
+}
+
+// Window resize
+void reshape(int w, int h) {
+
+    if (h == 0)
+        h = 1;
+
+    glViewport(0, 0, w, h);
+
+    glMatrixMode(GL_PROJECTION);
+
+    glLoadIdentity();
+
+    gluPerspective(
+        48.0,
+        (float)w / h,
+        0.1,
+        100.0
+    );
+
+    glMatrixMode(GL_MODELVIEW);
+}
+
+// Main function
+int main(int argc, char** argv) {
+
+    glutInit(&argc, argv);
+
+    glutInitDisplayMode(
+        GLUT_DOUBLE |
+        GLUT_RGB |
+        GLUT_DEPTH
+    );
+
+    glutInitWindowSize(1000, 700);
+
+    glutInitWindowPosition(100, 100);
+
+    glutCreateWindow(
+        "CO6 - Bus Lighting, Texture and Colour"
+    );
+
+    init();
+
+    glutDisplayFunc(display);
+
+    glutReshapeFunc(reshape);
+
+    glutKeyboardFunc(keyboard);
+
+    glutSpecialFunc(specialKeys);
+
+    cout << "\nCO6 - Bus Lighting, Texture and Colour\n";
+
+    cout << "B = Book Seat\n";
+    cout << "V = Vacate Seat\n";
+    cout << "R = Reset All Seats\n";
+    cout << "Arrow Keys = Select Seat\n";
+    cout << "ESC = Exit\n\n";
+
+    displaySeatStatus();
+
+    glutMainLoop();
+
+    return 0;
+}
